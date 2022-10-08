@@ -1,0 +1,155 @@
+# PoDato 1.0
+# ------------
+[
+  {
+    id: Weapon_Bomb
+    name: Bomb
+    type: Weapon
+    prefab: Weapon
+    icon: /textures/weapons/bomb.png
+    articleUnique:{
+      string: the <c>Bomb</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Bomb</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Weapon_Cleaver
+    name: Cleaver
+    type: Weapon
+    prefab: Weapon
+    icon: /textures/weapons/cleaver.png
+    articleUnique:{
+      string: the <c>Cleaver</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Cleaver</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Weapon_Crossbow
+    name: Crossbow
+    type: Weapon
+    prefab: Weapon
+    icon: /textures/weapons/crossbow.png
+    articleUnique:{
+      string: the <c>Crossbow</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Crossbow</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Weapon_Gloves
+    name: Gloves
+    type: Weapon
+    prefab: Weapon
+    icon: /textures/weapons/gloves.png
+    articleUnique:{
+      string: the <c>Gloves</c>
+      isPlural: true
+    }
+    articleGeneric:{
+      string: a pair of <c>Gloves</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Weapon_Hammer
+    name: Hammer
+    type: Weapon
+    prefab: Weapon
+    icon: /textures/weapons/hammer.png
+    articleUnique:{
+      string: the <c>Hammer</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Hammer</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Weapon_Matches
+    name: Matches
+    type: Weapon
+    prefab: Weapon
+    icon: /textures/weapons/matches.png
+    articleUnique:{
+      string: the <c>Matches</c>
+      isPlural: true
+    }
+    articleGeneric:{
+      string: a box of <c>Matches</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Weapon_Poison
+    name: Poison
+    type: Weapon
+    prefab: Weapon
+    icon: /textures/weapons/poison.png
+    articleUnique:{
+      string: the <c>Poison</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a bottle of <c>Poison</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Weapon_Revolver
+    name: Revolver
+    type: Weapon
+    prefab: Weapon
+    icon: /textures/weapons/revolver.png
+    articleUnique:{
+      string: the <c>Revolver</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Revolver</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Weapon_Wire
+    name: Wire
+    type: Weapon
+    prefab: Weapon
+    icon: /textures/weapons/wire.png
+    articleUnique:{
+      string: the <c>Wire</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Wire</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Weapon_Wrench
+    name: Wrench
+    type: Weapon
+    prefab: Weapon
+    icon: /textures/weapons/wrench.png
+    articleUnique:{
+      string: the <c>Wrench</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Wrench</c>
+      isPlural: false
+    }
+  }
+
+]

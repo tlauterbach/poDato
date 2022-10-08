@@ -1,0 +1,154 @@
+# PoDato 1.0
+# --------------
+[
+  {
+    id: Location_Abandoned
+    name: Abandoned House
+    type: Location
+    prefab: Location
+    icon: /textures/locations/abandoned.png
+    articleUnique: {
+      string: the <c>Abandoned House</c>
+      isPlural: false
+    }
+    articleGeneric: {
+      string: an <c>Abandoned House</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Location_Circus
+    name: Circus
+    type: Location
+    prefab: Location
+    icon: /textures/locations/circus.png
+    articleUnique:{
+      string: the <c>Circus</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Circus</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Location_Docks
+    name: Docks
+    type: Location
+    prefab: Location
+    icon: /textures/locations/docks.png
+    articleUnique:{
+      string: the <c>Docks</c>
+      isPlural: true
+    }
+    articleGeneric:{
+      string: a <c>Dock</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Location_Downtown
+    name: Downtown
+    type: Location
+    prefab: Location
+    icon: /textures/locations/downtown.png
+    articleUnique:{
+      string: <c>Downtown</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Downtown</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Location_Farm
+    name: Farm
+    type: Location
+    prefab: Location
+    icon: /textures/locations/farm.png
+    articleUnique:{
+      string: the <c>Farm</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Farm</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Location_Graveyard
+    name: Graveyard
+    type: Location
+    prefab: Location
+    icon: /textures/locations/graveyard.png
+    articleUnique:{
+      string: the <c>Graveyard</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Graveyard</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Location_Highway
+    name: Highway
+    type: Location
+    prefab: Location
+    icon: /textures/locations/highway.png
+    articleUnique:{
+      string: the <c>Highway</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Highway</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Location_Library
+    name: Library
+    type: Location
+    prefab: Location
+    icon: /textures/locations/library.png
+    articleUnique:{
+      string: the <c>Library</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Library</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Location_Park
+    name: Park
+    type: Location
+    prefab: Location
+    icon: /textures/locations/park.png
+    articleUnique:{
+      string: the <c>Park</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Park</c>
+      isPlural: false
+    }
+  }
+  {
+    id: Location_Square
+    name: Town Square
+    type: Location
+    prefab: Location
+    icon: /textures/locations/townSquare.png
+    articleUnique:{
+      string: the <c>Town Square</c>
+      isPlural: false
+    }
+    articleGeneric:{
+      string: a <c>Town Square</c>
+      isPlural: false
+    }
+  }
+]
