@@ -191,6 +191,34 @@ namespace PoDato {
 			);
 		}
 
+		public void Add(string key, Tater value) {
+			if (IsObject) {
+				m_object.Add(key, value);
+			} else {
+				throw InvalidCast(m_type, TaterType.Object);
+			}
+		}
+		public void Add(Tater value) {
+			if (IsArray) {
+				m_array.Add(value);
+			} else {
+				throw InvalidCast(m_type, TaterType.Array);
+			}
+		}
+		public bool Contains(string key) {
+			if (IsObject) {
+				return m_object.ContainsKey(key);
+			} else {
+				throw InvalidCast(m_type, TaterType.Object);
+			}
+		}
+		public bool Contains(string key, TaterType type) {
+			if (IsObject) {
+				return m_object.ContainsKey(key) && m_object[key].IsType(type);
+			} else {
+				throw InvalidCast(m_type, TaterType.Object);
+			}
+		}
 		public bool IsType(TaterType type) {
 			return m_type == type;
 		}

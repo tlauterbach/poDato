@@ -1,0 +1,30 @@
+# PoDato 1.0
+# --------------
+{
+  id: PuzzleTemplate_Test
+  evidence: EvidenceSet_DefaultOutdoors
+  presolvedLocations: {
+    amount: 3
+    items: [
+      LocationLibrary
+      LocationGraveyard
+    ]
+  }
+  presolvedWeapons: {
+    amount: 2
+    items: [ 
+      WeaponCleaver
+      WeaponWrench
+    ]
+  }
+  presolvedMotives: {
+    amount: 0
+    items: []
+  }
+  presolvedPeople: {
+    amount: 1 
+    items: [
+      PersonBystander
+    ]
+  }
+}

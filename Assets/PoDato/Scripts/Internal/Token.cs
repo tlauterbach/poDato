@@ -20,6 +20,9 @@ namespace PoDato {
 		public static bool operator !=(Token lhs, TokenType type) {
 			return !lhs.Equals(type);
 		}
+		public static implicit operator string(Token token) {
+			return token.Value.ToString();
+		}
 
 		public bool Equals(TokenType other) {
 			return Type == other;

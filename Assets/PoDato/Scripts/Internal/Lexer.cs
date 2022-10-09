@@ -39,7 +39,6 @@ namespace PoDato {
 
 			m_stream.Reset(input, m_tabSize);
 			m_tokens.Clear();
-			bool inField = false;
 			while (!m_stream.IsEndOfFile()) {
 				try {
 					// check if current is space or tab
@@ -56,25 +55,17 @@ namespace PoDato {
 					}
 					// check if current is control symbol
 					if (TraverseDictionary(m_symbols)) {
-						inField = false;
 						continue;
 					}
 					// check for colon and new line
 					if (TryAddToken(TokenType.Colon, m_colon)) {
 						continue;
 					}
-					if (inField) {
-						// we are expecting a field value
-						if (TraverseDictionary(m_scalars)) {
-							inField = false;
-							continue;
-						}
-					} else {
-						// we are expecting a field definition
-						if (TryAddToken(TokenType.Field, m_field)) {
-							inField = true;
-							continue;
-						}
+					if (TryAddToken(TokenType.Field, m_field)) {
+						continue;
+					}
+					if (TraverseDictionary(m_scalars)) {
+						continue;
 					}
 				} catch (Exception e) {
 					throw new Exception(string.Format("at {0}: {1}", m_stream.Position, e.Message));
@@ -121,7 +112,6 @@ namespace PoDato {
 				Token token = new Token(type, m_stream.Position, m_stream.Slice(length));
 				m_stream.Advance(length);
 				m_tokens.Add(token);
-				Debug.Log(token.ToString());
 				return true;
 			} else {
 				return false;
