@@ -1,0 +1,55 @@
+# PoDato 1.0
+# ------------
+{
+  string : string value
+  int32: 22393049
+  int16: -309209
+  int64: 39029485723
+  uint32: 11112345
+  uint16: 239430
+  uint64: 34932093821
+  byte: 255
+  sbyte: -128
+  double: 0.39492e12
+  single: -1.29349548
+  boolean: true
+  rect: {
+    x: 5.12
+    y: 5.0
+    width: 213.03
+    height: 239.390
+  }
+  vector2:{
+    x: 3495.0
+    y: 34094.2
+  }
+  vector3:{
+    x: 123.0
+    y: 123.0
+    z: 111.1
+  }
+  vector4:{
+    x: 1092.0
+    y: 1.202
+    z: 9093.0
+    w: 1
+  }
+  quaternion:{
+    x: 0.092
+    y: 0.939
+    z: 0.123
+    w: 0.405
+  }
+  color:{
+    r: 1.0
+    g: 0.5
+    b: 0.0
+    a: 1.0
+  }
+  color32: {
+    r: 256
+    g: 128
+    b: 0
+    a: 256
+  }
+}

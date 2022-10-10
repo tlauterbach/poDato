@@ -14,7 +14,7 @@
     amount: 2
     items: [ 
       WeaponCleaver
-      WeaponWrench
+      WeaponWrench #this is an inline comment
     ]
   }
   presolvedMotives: {

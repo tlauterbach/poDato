@@ -1,10 +1,10 @@
 ﻿namespace PoDato {
 
-	public interface ISerialized {
-
-		void OnSerialize(IWriter writer);
-		void OnDeserialize(IReader reader);
-
+	public interface IReadable {
+		void Deserialize(IReader reader);
+	}
+	public interface IWritable {
+		void Serialize(IWriter writer);
 	}
 
 }

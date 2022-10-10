@@ -5,6 +5,7 @@ namespace PoDato {
 
 	public class Tater {
 
+		public string Name { get { return m_name; } }
 		public TaterType Type { get { return m_type; } }
 		public bool IsNull { get { return IsType(TaterType.Null); } }
 		public bool IsObject { get { return IsType(TaterType.Object); } }
@@ -20,7 +21,7 @@ namespace PoDato {
 				if (IsString) {
 					return m_string;
 				} else {
-					throw InvalidCast(m_type, TaterType.String);
+					throw InvalidCast(this, TaterType.String);
 				}
 			}
 		}
@@ -29,7 +30,7 @@ namespace PoDato {
 				if (IsBoolean) {
 					return m_boolean;
 				} else {
-					throw InvalidCast(m_type, TaterType.Boolean);
+					throw InvalidCast(this, TaterType.Boolean);
 				}
 			}
 		}
@@ -38,7 +39,7 @@ namespace PoDato {
 				if (IsNumber) {
 					return m_number;
 				} else {
-					throw InvalidCast(m_type, TaterType.Number);
+					throw InvalidCast(this, TaterType.Number);
 				}
 			}
 		}
@@ -47,7 +48,7 @@ namespace PoDato {
 				if (IsNumber) {
 					return Convert.ToSingle(m_number);
 				} else {
-					throw InvalidCast(m_type, TaterType.Number);
+					throw InvalidCast(this, TaterType.Number);
 				}
 			}
 		}
@@ -56,7 +57,7 @@ namespace PoDato {
 				if (IsNumber) {
 					return Convert.ToInt32(m_number);
 				} else {
-					throw InvalidCast(m_type, TaterType.Number);
+					throw InvalidCast(this, TaterType.Number);
 				}
 			}
 		}
@@ -65,7 +66,7 @@ namespace PoDato {
 				if (IsNumber) {
 					return Convert.ToInt16(m_number);
 				} else {
-					throw InvalidCast(m_type, TaterType.Number);
+					throw InvalidCast(this, TaterType.Number);
 				}
 			}
 		}
@@ -74,7 +75,7 @@ namespace PoDato {
 				if (IsNumber) {
 					return Convert.ToInt64(m_number);
 				} else {
-					throw InvalidCast(m_type, TaterType.Number);
+					throw InvalidCast(this, TaterType.Number);
 				}
 			}
 		}
@@ -83,7 +84,7 @@ namespace PoDato {
 				if (IsNumber) {
 					return Convert.ToUInt32(m_number);
 				} else {
-					throw InvalidCast(m_type, TaterType.Number);
+					throw InvalidCast(this, TaterType.Number);
 				}
 			}
 		}
@@ -92,7 +93,7 @@ namespace PoDato {
 				if (IsNumber) {
 					return Convert.ToUInt16(m_number);
 				} else {
-					throw InvalidCast(m_type, TaterType.Number);
+					throw InvalidCast(this, TaterType.Number);
 				}
 			}
 		}
@@ -101,7 +102,25 @@ namespace PoDato {
 				if (IsNumber) {
 					return Convert.ToUInt64(m_number);
 				} else {
-					throw InvalidCast(m_type, TaterType.Number);
+					throw InvalidCast(this, TaterType.Number);
+				}
+			}
+		}
+		public byte AsByte {
+			get {
+				if (IsNumber) {
+					return Convert.ToByte(m_number);
+				} else {
+					throw InvalidCast(this, TaterType.Number);
+				}
+			}
+		}
+		public sbyte AsSByte {
+			get {
+				if (IsNumber) {
+					return Convert.ToSByte(m_number);
+				} else {
+					throw InvalidCast(this, TaterType.Number);
 				}
 			}
 		}
@@ -116,7 +135,7 @@ namespace PoDato {
 					}
 					return m_array[index];
 				} else {
-					throw InvalidCast(m_type, TaterType.Array);
+					throw InvalidCast(this, TaterType.Array);
 				}	
 			}
 		}
@@ -126,14 +145,37 @@ namespace PoDato {
 					if (m_object.ContainsKey(key)) {
 						return m_object[key];
 					} else {
-						return CreateNull();
+						throw new KeyNotFoundException($"`{m_name}' does not contain key `{key}'");
 					}
 				} else {
-					throw InvalidCast(m_type, TaterType.Object);
+					throw InvalidCast(this, TaterType.Object);
+				}
+			}
+		}
+		public int Count {
+			get {
+				if (IsObject) {
+					return m_object.Count;
+				} else if (IsArray) {
+					return m_array.Count;
+				} else {
+					throw InvalidCast(this, TaterType.Array);
+				}
+			}
+		}
+		public IEnumerable<string> Keys {
+			get {
+				if (IsObject) {
+					foreach (string key in m_object.Keys) {
+						yield return key;
+					}
+				} else {
+					throw InvalidCast(this, TaterType.Object);
 				}
 			}
 		}
 
+		private string m_name;
 		private TaterType m_type;
 		private Dictionary<string, Tater> m_object;
 		private List<Tater> m_array;
@@ -147,37 +189,43 @@ namespace PoDato {
 
 		#region Constructor Functions
 
-		public static Tater CreateArray() {
+		public static Tater CreateArray(string name) {
 			Tater obj = new Tater();
+			obj.m_name = name;
 			obj.m_array = new List<Tater>();
 			obj.m_type = TaterType.Array;
 			return obj;
 		}
-		public static Tater CreateObject() {
+		public static Tater CreateObject(string name) {
 			Tater obj = new Tater();
+			obj.m_name = name;
 			obj.m_object = new Dictionary<string, Tater>();
 			obj.m_type = TaterType.Object;
 			return obj;
 		}
-		public static Tater CreateNull() {
+		public static Tater CreateNull(string name) {
 			Tater obj = new Tater();
+			obj.m_name = name;
 			obj.m_type = TaterType.Null;
 			return obj;
 		}
-		public static Tater CreateString(string value) {
+		public static Tater CreateString(string name, string value) {
 			Tater obj = new Tater();
+			obj.m_name = name;
 			obj.m_type = TaterType.String;
 			obj.m_string = value;
 			return obj;
 		}
-		public static Tater CreateNumber(double value) {
+		public static Tater CreateNumber(string name, double value) {
 			Tater obj = new Tater();
+			obj.m_name = name;
 			obj.m_type = TaterType.Number;
 			obj.m_number = value;
 			return obj;
 		}
-		public static Tater CreateBoolean(bool value) {
+		public static Tater CreateBoolean(string name, bool value) {
 			Tater obj = new Tater();
+			obj.m_name = name;
 			obj.m_type = TaterType.Boolean;
 			obj.m_boolean = value;
 			return obj;
@@ -185,9 +233,9 @@ namespace PoDato {
 
 		#endregion
 
-		private static InvalidCastException InvalidCast(TaterType from, TaterType to) {
+		private static InvalidCastException InvalidCast(Tater from, TaterType to) {
 			return new InvalidCastException(
-				$"Cannot cast from type `{from}' to type `{to}'"
+				$"`{from.Name}' cannot cast from type `{from.Type}' to type `{to}'"
 			);
 		}
 
@@ -195,28 +243,28 @@ namespace PoDato {
 			if (IsObject) {
 				m_object.Add(key, value);
 			} else {
-				throw InvalidCast(m_type, TaterType.Object);
+				throw InvalidCast(this, TaterType.Object);
 			}
 		}
 		public void Add(Tater value) {
 			if (IsArray) {
 				m_array.Add(value);
 			} else {
-				throw InvalidCast(m_type, TaterType.Array);
+				throw InvalidCast(this, TaterType.Array);
 			}
 		}
 		public bool Contains(string key) {
 			if (IsObject) {
 				return m_object.ContainsKey(key);
 			} else {
-				throw InvalidCast(m_type, TaterType.Object);
+				throw InvalidCast(this, TaterType.Object);
 			}
 		}
 		public bool Contains(string key, TaterType type) {
 			if (IsObject) {
 				return m_object.ContainsKey(key) && m_object[key].IsType(type);
 			} else {
-				throw InvalidCast(m_type, TaterType.Object);
+				throw InvalidCast(this, TaterType.Object);
 			}
 		}
 		public bool IsType(TaterType type) {
