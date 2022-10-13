@@ -235,7 +235,7 @@ namespace PoDato {
 
 		private static InvalidCastException InvalidCast(Tater from, TaterType to) {
 			return new InvalidCastException(
-				$"`{from.Name}' cannot cast from type `{from.Type}' to type `{to}'"
+				$"Cannot cast field `{from.Name}' from type `{from.Type}' to `{to}'"
 			);
 		}
 

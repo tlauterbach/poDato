@@ -115,7 +115,7 @@ namespace PoDato {
 				Tater node = Current[name];
 				if (node.IsNull) {
 					collection = default;
-					return false;
+					return true;
 				}
 				collection = new T();
 				for (int ix = 0; ix < node.Count; ix++) {
@@ -132,7 +132,7 @@ namespace PoDato {
 				Tater node = Current[name];
 				if (node.IsNull) {
 					dictionary = default;
-					return false;
+					return true;
 				}
 				dictionary = new T();
 				foreach (string key in node.Keys) {
@@ -149,7 +149,7 @@ namespace PoDato {
 			try {
 				value = reader(Current[name]);
 			} catch (Exception e) {
-				LogError(new Exception($"Could not read required field {name}: " + e.Message));
+				LogError(new Exception($"Could not read required field \"{name}\": {e.Message}"));
 				value = default;
 			}
 		}
@@ -165,7 +165,7 @@ namespace PoDato {
 					collection.Add(reader(node[ix]));
 				}
 			} catch (Exception e) {
-				LogError(new Exception($"Could not read required collection {name}: " + e.Message));
+				LogError(new Exception($"Could not read required collection \"{name}\": {e.Message}"));
 				collection = default;
 			}
 		}
@@ -181,7 +181,7 @@ namespace PoDato {
 					dictionary.Add(key, reader(node[key]));
 				}
 			} catch (Exception e) {
-				LogError(new Exception($"Could not read required dictionary {name}: " + e.Message));
+				LogError(new Exception($"Could not read required dictionary \"{name}\": {e.Message}"));
 				dictionary = default;
 			}
 		}

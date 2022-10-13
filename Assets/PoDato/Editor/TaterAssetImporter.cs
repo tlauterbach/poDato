@@ -4,8 +4,8 @@ using UnityEditor.AssetImporters;
 using UnityEngine;
 
 namespace PoDato.Editor {
-	[ScriptedImporter(3, "tater")]
-	public class PotatoScriptImporter : ScriptedImporter {
+	[ScriptedImporter(1, "tater")]
+	public class TaterAssetImporter : ScriptedImporter {
 
 		public override void OnImportAsset(AssetImportContext ctx) {
 
@@ -17,14 +17,6 @@ namespace PoDato.Editor {
 			ctx.AddObjectToAsset("text", asset);
 			ctx.SetMainObject(asset);
 
-		}
-
-		[CustomEditor(typeof(PotatoScriptImporter))]
-		private class Importer : UnityEditor.Editor {
-
-			public override void OnInspectorGUI() {
-
-			}
 		}
 
 	}

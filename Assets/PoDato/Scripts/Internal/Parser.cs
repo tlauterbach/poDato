@@ -7,9 +7,9 @@
 			if (stream.IsEndOfFile()) {
 				return null;
 			} else if (stream.Peek(TokenType.OpenSquare)) {
-				root = ParseArray(stream, "root");
+				root = ParseArray(stream, "root_array");
 			} else if (stream.Peek(TokenType.OpenCurly)) {
-				root = ParseObject(stream, "root");
+				root = ParseObject(stream, "root_object");
 			} else {
 				throw new ParseException(stream.Peek().Position, "Root value must be an object or array.");
 			}
