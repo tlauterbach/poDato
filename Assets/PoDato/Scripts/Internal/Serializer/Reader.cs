@@ -1488,9 +1488,6 @@ namespace PoDato {
 
 		#endregion
 
-
-
-
 	}
 
 }

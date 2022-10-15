@@ -2,9 +2,9 @@
 using System;
 using UnityEngine;
 
-public class Evidence : IReadable {
+public class Evidence : IReadable, IWritable {
 
-	private struct EvidenceID : IEquatable<EvidenceID>, IReadProxy<string> {
+	private struct EvidenceID : IEquatable<EvidenceID>, IReadProxy<string>, IWriteProxy<string> {
 
 		private int m_hash;
 		private string m_value;
@@ -19,6 +19,9 @@ public class Evidence : IReadable {
 		public void SetProxyValue(string value) {
 			m_hash = value.GetHashCode();
 			m_value = value;
+		}
+		public string GetProxyValue() {
+			return m_value;
 		}
 		public override bool Equals(object obj) {
 			if (obj is EvidenceID id) {
@@ -42,13 +45,17 @@ public class Evidence : IReadable {
 		Person
 	}
 
-	private class ArticleInfo : IReadable {
+	private class ArticleInfo : IReadable, IWritable {
 		private string m_string;
 		private bool m_isPlural;
 
 		public void Deserialize(IReader reader) {
 			reader.RequiredString("string", ref m_string);
 			reader.RequiredBool("isPlural", ref m_isPlural);
+		}
+		public void Serialize(IWriter writer) {
+			writer.Write("string", m_string);
+			writer.Write("isPlural", m_isPlural);
 		}
 	}
 
@@ -68,6 +75,15 @@ public class Evidence : IReadable {
 		reader.RequiredString("icon", ref m_icon);
 		reader.RequiredObject("articleUnique", ref m_articleUnique);
 		reader.RequiredObject("articleGeneric", ref m_articleGeneric);
+	}
+	public void Serialize(IWriter writer) {
+		writer.Write("id", m_id);
+		writer.Write("name", m_name);
+		writer.Write("type", m_type);
+		writer.Write("prefab", m_prefab);
+		writer.Write("icon", m_icon);
+		writer.Write("articleUnique", m_articleUnique);
+		writer.Write("articleGeneric", m_articleGeneric);
 	}
 }
 

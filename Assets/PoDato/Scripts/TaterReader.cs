@@ -1,13 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace PoDato {
-
-	public interface IWriter {
-
-	}
-	
 
 	public class TaterReader {
 
@@ -29,7 +20,9 @@ namespace PoDato {
 		public ReadResult<T> Read<T>(TaterAsset asset) where T : IReadable, new() {
 			return m_reader.Read<T>(asset.Text);
 		}
-
+		public ReadResult<T> Read<T>(Tater input) where T : IReadable, new() {
+			return m_reader.Read<T>(input);
+		}
 
 	}
 
