@@ -11,7 +11,7 @@ public class Test : MonoBehaviour {
 
 	public void Awake() {
 		m_reader = new TaterReader(2);
-		ReadResult<Evidence> result = m_reader.Read<Evidence>(m_asset);
+		ReadResult<ManyTypes> result = m_reader.Read<ManyTypes>(m_asset);
 		if (result.IsSuccess) {
 			Debug.Log("Finished Successfully");
 		} else {

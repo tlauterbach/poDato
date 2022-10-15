@@ -1,5 +1,6 @@
 ﻿using PoDato;
 using System;
+using UnityEngine;
 
 public class Evidence : IReadable {
 
@@ -70,7 +71,6 @@ public class Evidence : IReadable {
 	}
 }
 
-/*
 public class ManyTypes : IReadable {
 
 	private string m_string;
@@ -91,27 +91,28 @@ public class ManyTypes : IReadable {
 	private Vector4 m_vector4;
 	private Quaternion m_quaternion;
 	private Color m_color;
+	private Color32 m_color32;
 
 	public void Deserialize(IReader reader) {
-		m_string = reader.ReadString("string");
-		m_int16 = reader.ReadInt16("int16");
-		m_int32 = reader.ReadInt32("int32");
-		m_int64 = reader.ReadInt64("int64");
-		m_uint16 = reader.ReadUInt16("uint16");
-		m_uint32 = reader.ReadUInt32("uint32");
-		m_uint64 = reader.ReadUInt64("uint64");
-		m_byte = reader.ReadByte("byte");
-		m_sbyte = reader.ReadSByte("sbyte");
-		m_double = reader.ReadDouble("double");
-		m_single = reader.ReadSingle("single");
-		m_boolean = reader.ReadBoolean("boolean");
-		m_rect = reader.ReadRect("rect");
-		m_vector2 = reader.ReadVector2("vector2");
-		m_vector3 = reader.ReadVector3("vector3");
-		m_vector4 = reader.ReadVector4("vector4");
-		m_quaternion = reader.ReadQuaternion("quaternion");
-		m_color = reader.ReadColor("color");
+		reader.RequiredString("string", ref m_string);
+		reader.RequiredInt16("int16", ref m_int16);
+		reader.RequiredInt32("int32", ref m_int32);
+		reader.RequiredInt64("int64", ref m_int64);
+		reader.RequiredUInt16("uint16", ref m_uint16);
+		reader.RequiredUInt32("uint32", ref m_uint32);
+		reader.RequiredUInt64("uint64", ref m_uint64);
+		reader.RequiredByte("byte", ref m_byte);
+		reader.RequiredSByte("sbyte", ref m_sbyte);
+		reader.RequiredDouble("double", ref m_double);
+		reader.RequiredSingle("single", ref m_single);
+		reader.RequiredBool("boolean", ref m_boolean);
+		reader.RequiredRect("rect", ref m_rect);
+		reader.RequiredVector2("vector2", ref m_vector2);
+		reader.RequiredVector3("vector3", ref m_vector3);
+		reader.RequiredVector4("vector4", ref m_vector4);
+		reader.RequiredQuaternion("quaternion", ref m_quaternion);
+		reader.RequiredColor("color", ref m_color);
+		reader.RequiredColor32("color32", ref m_color32);
 	}
 
 }
-*/
