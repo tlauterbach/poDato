@@ -87,7 +87,7 @@ public class Evidence : IReadable, IWritable {
 	}
 }
 
-public class ManyTypes : IReadable {
+public class ManyTypes : IReadable, IWritable {
 
 	private string m_string;
 	private int m_int32;
@@ -129,6 +129,27 @@ public class ManyTypes : IReadable {
 		reader.RequiredQuaternion("quaternion", ref m_quaternion);
 		reader.RequiredColor("color", ref m_color);
 		reader.RequiredColor32("color32", ref m_color32);
+	}
+	public void Serialize(IWriter writer) {
+		writer.Write("string", m_string);
+		writer.Write("int16", m_int16);
+		writer.Write("int32", m_int32);
+		writer.Write("int64", m_int64);
+		writer.Write("uint16", m_uint16);
+		writer.Write("uint32", m_uint32);
+		writer.Write("uint64", m_uint64);
+		writer.Write("byte", m_byte);
+		writer.Write("sbyte", m_sbyte);
+		writer.Write("double", m_double);
+		writer.Write("single", m_single);
+		writer.Write("boolean", m_boolean);
+		writer.Write("rect", m_rect);
+		writer.Write("vector2", m_vector2);
+		writer.Write("vector3", m_vector3);
+		writer.Write("vector4", m_vector4);
+		writer.Write("quaternion", m_quaternion);
+		writer.Write("color", m_color);
+		writer.Write("color32", m_color32);
 	}
 
 }

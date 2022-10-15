@@ -56,7 +56,7 @@ Like JSON, *PoDato* is comprised of **Objects**, **Arrays**, and **Values**
     withQuotes: "If you need reserved characters like the `:' you can double quote your string."
   }
   arrayOfStrings: [
-    example string
+    example string # with a comment to the side
     another string
     yet another string
     "a double quoted string"
@@ -75,4 +75,4 @@ Like JSON, *PoDato* is comprised of **Objects**, **Arrays**, and **Values**
 }
 ```
 
-For a more in-depth look at the grammar for parsing purposes, view the [PoDato Grammar File](grammar.pdf).
+For a more in-depth look at the grammar for parsing purposes, take a look at the [PoDato Grammar PDF](grammar.pdf).

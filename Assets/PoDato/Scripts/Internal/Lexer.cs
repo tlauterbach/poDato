@@ -7,9 +7,6 @@ namespace PoDato {
 	internal class Lexer {
 
 		private const char COMMENT = '#';
-		private const string COMMENT_OPEN = "/*";
-		private const string COMMENT_CLOSE = "*/";
-		private const string COMMENT_INLINE = "//";
 
 		private static readonly Dictionary<TokenType, IPattern> m_symbols = new Dictionary<TokenType, IPattern>() {
 			{ TokenType.OpenCurly, new PatternSymbol("{") },
@@ -118,7 +115,6 @@ namespace PoDato {
 				m_stream.AdvanceIndex(length);
 				m_stream.AdvancePosition(length);
 				m_tokens.Add(token);
-				Debug.Log(token);
 				return true;
 			} else {
 				return false;
