@@ -52,8 +52,8 @@ Like JSON, *PoDato* is comprised of **Objects**, **Arrays**, and **Values**
   object: {
     boolean: true
     single: 1.0202
-    stringNoQuotes: This is an example string that does not use double quotes.
-    stringWithQuotes: "If you need to use reserved characters like the `:' you can double quote your string."
+    noQuotes: This is an example string that does not use double quotes.
+    withQuotes: "If you need reserved characters like the `:' you can double quote your string."
   }
   arrayOfStrings: [
     example string
@@ -74,3 +74,5 @@ Like JSON, *PoDato* is comprised of **Objects**, **Arrays**, and **Values**
   ]
 }
 ```
+
+For a more in-depth look at the grammar for parsing purposes, view the [PoDato Grammar File](grammar.pdf).

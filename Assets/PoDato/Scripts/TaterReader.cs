@@ -4,7 +4,7 @@ namespace PoDato {
 
 		private Reader m_reader;
 
-		public TaterReader(int tabSize = 4) {
+		public TaterReader(int tabSize = 2) {
 			m_reader = new Reader(tabSize);
 		}
 

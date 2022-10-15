@@ -38,19 +38,20 @@ namespace PoDato {
 		public StringSlice Slice(int length) {
 			return new StringSlice(m_input, Index, length);
 		}
-		public void Tab() {
+		public void TabPosition() {
 			Position = Position.Tab(m_tabSize);
-			Advance();
 		}
-		public void Space() {
+		public void SpacePosition() {
 			Position = Position.Space();
-			Advance();
 		}
-		public void LineFeed() {
+		public void LineFeedPosition() {
 			Position = Position.LineFeed();
-			Advance();
 		}
-		public void Advance(int distance = 1) {
+		public void AdvancePosition(int distance = 1) {
+			Position = Position.Advance(distance);
+		}
+
+		public void AdvanceIndex(int distance = 1) {
 			Index += distance;
 		}
 

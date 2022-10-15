@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace PoDato {
 
 	internal class Lexer {
 
 		private const char COMMENT = '#';
+		private const string COMMENT_OPEN = "/*";
+		private const string COMMENT_CLOSE = "*/";
+		private const string COMMENT_INLINE = "//";
 
-		private static readonly PatternField m_field = new PatternField();
 		private static readonly Dictionary<TokenType, IPattern> m_symbols = new Dictionary<TokenType, IPattern>() {
 			{ TokenType.OpenCurly, new PatternSymbol("{") },
 			{ TokenType.CloseCurly, new PatternSymbol("}") },
 			{ TokenType.OpenSquare, new PatternSymbol("[") },
 			{ TokenType.CloseSquare, new PatternSymbol("]") },
+			{ TokenType.Colon, new PatternSymbol(":") }
 		};
-		private static readonly PatternSymbol m_colon = new PatternSymbol(":");
-		private static readonly Dictionary<TokenType, IPattern> m_scalars = new Dictionary<TokenType, IPattern>() {
+		private static readonly PatternField m_field = new PatternField();
+		private static readonly Dictionary<TokenType, IPattern> m_values = new Dictionary<TokenType, IPattern>() {
 			{ TokenType.True, new PatternKeyword("true") },
 			{ TokenType.False, new PatternKeyword("false") },
 			{ TokenType.Null, new PatternKeyword("null") },
@@ -44,10 +48,6 @@ namespace PoDato {
 					if (TryIgnoreWhiteSpace()) {
 						continue;
 					}
-					if (m_stream.Peek() == '\n') {
-						m_stream.LineFeed();
-						continue;
-					}
 					// check if current is a comment
 					if (TryHandleComment()) {
 						continue;
@@ -56,14 +56,10 @@ namespace PoDato {
 					if (TraverseDictionary(m_symbols)) {
 						continue;
 					}
-					// check for colon and new line
-					if (TryAddToken(TokenType.Colon, m_colon)) {
-						continue;
-					}
 					if (TryAddToken(TokenType.Field, m_field)) {
 						continue;
 					}
-					if (TraverseDictionary(m_scalars)) {
+					if (TraverseDictionary(m_values)) {
 						continue;
 					}
 				} catch (Exception e) {
@@ -80,17 +76,27 @@ namespace PoDato {
 		private bool TryIgnoreWhiteSpace() {
 			char c = m_stream.Peek();
 			switch (c) {
-				case '\t': m_stream.Tab(); return true;
-				case ' ': m_stream.Space(); return true;
-				default: return false;
+				case '\t': 
+					m_stream.TabPosition(); 
+					m_stream.AdvanceIndex(); 
+					return true;
+				case ' ':
+					m_stream.SpacePosition(); 
+					m_stream.AdvanceIndex(); 
+					return true;
+				case '\n': 
+					m_stream.LineFeedPosition(); 
+					m_stream.AdvanceIndex();  
+					return true;
+				default: 
+					return false;
 			}
 		}
 		private bool TryHandleComment() {
 			if (m_stream.Peek() == COMMENT) {
 				while (!m_stream.IsEndOfFile() && m_stream.Peek() != '\n') {
-					m_stream.Advance();
+					m_stream.AdvanceIndex();
 				}
-				m_stream.LineFeed();
 				return true;
 			} else {
 				return false;
@@ -109,8 +115,10 @@ namespace PoDato {
 		private bool TryAddToken(TokenType type, IPattern pattern) {
 			if (pattern.Matches(m_stream, out int length)) {
 				Token token = new Token(type, m_stream.Position, m_stream.Slice(length));
-				m_stream.Advance(length);
+				m_stream.AdvanceIndex(length);
+				m_stream.AdvancePosition(length);
 				m_tokens.Add(token);
+				Debug.Log(token);
 				return true;
 			} else {
 				return false;
