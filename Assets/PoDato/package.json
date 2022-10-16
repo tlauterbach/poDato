@@ -1,0 +1,21 @@
+{
+  "name": "com.potatointeractive.podato",
+  "version": "1.0.0",
+  "displayName": "PoDato",
+  "description": "Reader/Writer for Unity/C# for easy to hand-write data file format PoDato",
+  "unity": "2020.3",
+  "type": "utilities",
+  "dependencies": {
+  },
+  "keywords": [
+    "Unity", "utility", "util", "PoDato"
+  ],
+  "author": {
+    "name": "Terra Lauterbach",
+    "email": "potatointeractive@gmail.com",
+    "url": "https://rottentater.com/"
+  },
+  "publishConfig": {
+    "registry": "https://package.openupm.com"
+  }
+}
