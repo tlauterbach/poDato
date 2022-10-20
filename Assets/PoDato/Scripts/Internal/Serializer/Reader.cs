@@ -98,10 +98,6 @@ namespace PoDato {
 			return m_input.Pop();
 		}
 
-		private void LogError(Exception exception) {
-			m_errors.Add(exception.Message);
-		}
-
 		private bool DoOptional<T>(string name, ref T value, ReadFunc<T> reader) {
 			try {
 				value = reader(Current[name]);
@@ -564,6 +560,13 @@ namespace PoDato {
 		#endregion
 
 		#region IReader
+
+		public void LogError(Exception exception) {
+			m_errors.Add(exception.Message);
+		}
+		public void LogError(string error) {
+			m_errors.Add(error);
+		}
 
 		public bool OptionalObject<T>(string name, ref T value) where T : IReadable, new() {
 			return DoOptional(name, ref value, TaterToObject<T>);

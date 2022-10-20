@@ -103,6 +103,8 @@ public class ReaderGenerator {
 	};
 
 	private static readonly List<string> m_complex = new List<string>() {
+		"void LogError(Exception error)",
+		"void LogError(string error)",
 		"bool OptionalObject<T>(string name, ref T value) where T : IReadable, new()",
 		"bool OptionalObjectList<T, U>(string name, ref T value) where T : ICollection<U>, new () where U : IReadable, new ()",
 		"bool OptionalObjectArray<T>(string name, ref T[] value) where T : IReadable, new()",
@@ -182,6 +184,8 @@ public class ReaderGenerator {
 		builder.Append('}').Append(LINE_END);
 
 		File.WriteAllText(string.Concat(Application.dataPath, "/PoDato/Scripts/Internal/Serializer/Reader.Generated.cs"), builder.ToString());
+
+		AssetDatabase.Refresh();
 	}
 
 	private static void IncreaseIndent() {
