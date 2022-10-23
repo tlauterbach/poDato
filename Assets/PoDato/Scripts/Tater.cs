@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PoDato {
@@ -168,6 +169,32 @@ namespace PoDato {
 				if (IsObject) {
 					foreach (string key in m_object.Keys) {
 						yield return key;
+					}
+				} else {
+					throw InvalidCast(this, TaterType.Object);
+				}
+			}
+		}
+		public IEnumerable<Tater> Values {
+			get {
+				if (IsObject) {
+					foreach (string key in m_object.Keys) {
+						yield return m_object[key];
+					}
+				} else if (IsArray) {
+					foreach (Tater tater in m_array) {
+						yield return tater;
+					}
+				} else {
+					throw InvalidCast(this, TaterType.Object);
+				}
+			}
+		}
+		public IEnumerable<KeyValuePair<string, Tater>> KeyValuePairs {
+			get {
+				if (IsObject) {
+					foreach (KeyValuePair<string, Tater> kvp in m_object) {
+						yield return kvp;
 					}
 				} else {
 					throw InvalidCast(this, TaterType.Object);

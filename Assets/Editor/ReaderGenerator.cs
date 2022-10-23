@@ -105,6 +105,7 @@ public class ReaderGenerator {
 	private static readonly List<string> m_complex = new List<string>() {
 		"void LogError(Exception error)",
 		"void LogError(string error)",
+		"Tater GetTater()",
 		"bool OptionalObject<T>(string name, ref T value) where T : IReadable, new()",
 		"bool OptionalObjectList<T, U>(string name, ref T value) where T : ICollection<U>, new () where U : IReadable, new ()",
 		"bool OptionalObjectArray<T>(string name, ref T[] value) where T : IReadable, new()",

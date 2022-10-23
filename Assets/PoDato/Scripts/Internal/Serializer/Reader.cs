@@ -567,6 +567,9 @@ namespace PoDato {
 		public void LogError(string error) {
 			m_errors.Add(error);
 		}
+		public Tater GetTater() {
+			return Current;
+		}
 
 		public bool OptionalObject<T>(string name, ref T value) where T : IReadable, new() {
 			return DoOptional(name, ref value, TaterToObject<T>);
