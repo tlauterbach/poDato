@@ -7,9 +7,9 @@
 			if (stream.IsEndOfFile()) {
 				return null;
 			} else if (stream.Peek(TokenType.OpenSquare)) {
-				root = ParseArray(stream, "root_array");
+				root = ParseArray(stream, "root");
 			} else if (stream.Peek(TokenType.OpenCurly)) {
-				root = ParseObject(stream, "root_object");
+				root = ParseObject(stream, "root");
 			} else {
 				throw new ParseException(stream.Peek().Position, "Root value must be an object or array.");
 			}
@@ -21,7 +21,7 @@
 			Tater array = Tater.CreateArray(name);
 			int index = 0;
 			while (!stream.IsEndOfFile() && !stream.Peek(TokenType.CloseSquare)) {
-				array.Add(ParseValue(stream, $"{name}_{index}"));
+				array.Add(ParseValue(stream, $"{name}_{index++}"));
 			}
 			stream.Expect(TokenType.CloseSquare);
 			return array;
