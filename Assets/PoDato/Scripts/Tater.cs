@@ -139,6 +139,16 @@ namespace PoDato {
 					throw InvalidCast(this, TaterType.Array);
 				}	
 			}
+			set {
+				if (IsArray) {
+					if (index < 0 || index >= m_array.Count) {
+						throw new IndexOutOfRangeException();
+					}
+					m_array[index] = value;
+				} else {
+					throw InvalidCast(this, TaterType.Array);
+				}
+			}
 		}
 		public Tater this[string key] {
 			get {
@@ -147,6 +157,17 @@ namespace PoDato {
 						return m_object[key];
 					} else {
 						throw new KeyNotFoundException($"`{m_name}' does not contain key `{key}'");
+					}
+				} else {
+					throw InvalidCast(this, TaterType.Object);
+				}
+			}
+			set {
+				if (IsObject) {
+					if (m_object.ContainsKey(key)) {
+						m_object[key] = value;
+					} else {
+						m_object.Add(key, value);
 					}
 				} else {
 					throw InvalidCast(this, TaterType.Object);
