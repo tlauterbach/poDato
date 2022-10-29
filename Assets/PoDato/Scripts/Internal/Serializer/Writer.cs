@@ -72,32 +72,23 @@ namespace PoDato {
 
 		private Tater ObjectToTater(string name, IWritable value) {
 			if (value == null) {
-				return Tater.CreateNull(name);
-			} else {
-				Tater obj = Tater.CreateObject(name);
-				m_output.Push(obj);
-				value.Serialize(this);
-				m_output.Pop();
-				return obj;
+				throw new NullReferenceException($"value `{name}' is not set to instance of an object");
 			}
+			Tater obj = Tater.CreateObject(name);
+			m_output.Push(obj);
+			value.Serialize(this);
+			m_output.Pop();
+			return obj;
 		}
 		private Tater EnumToTater(string name, Enum value) {
 			return Tater.CreateString(name, value.ToString());
 		}
 		private Tater StringToTater(string name, string value) {
-			if (string.IsNullOrEmpty(value)) {
-				return Tater.CreateNull(name);
-			} else {
-				return Tater.CreateString(name, value);
-			}
+			return Tater.CreateString(name, value);
 		}
 		private Tater StringProxyToTater<T>(string name, T value) where T : IWriteProxy<string> {
 			string str = value.GetProxyValue();
-			if (string.IsNullOrEmpty(str)) {
-				return Tater.CreateNull(name);
-			} else {
-				return Tater.CreateString(name, str);
-			}
+			return Tater.CreateString(name, str);
 		}
 		private Tater Int32ToTater(string name, int value) {
 			return Tater.CreateNumber(name, value);

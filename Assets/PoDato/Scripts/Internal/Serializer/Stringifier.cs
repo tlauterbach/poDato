@@ -61,8 +61,6 @@ namespace PoDato {
 				AppendArray(tater);
 			} else if (tater.IsObject) {
 				AppendObject(tater);
-			} else if (tater.IsNull) {
-				m_builder.Append("null").Append('\n');
 			} else if (tater.IsBoolean) {
 				m_builder.Append(tater.AsBool ? "true" : "false").Append('\n');
 			} else if (tater.IsNumber) {

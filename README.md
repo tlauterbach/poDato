@@ -3,7 +3,7 @@ Reader/Writer for Unity/C# for easy to hand-write data file format PoDato
 
 | Package Name | Package Version | Unity Version |
 |-----|-----|-----|
-| com.potatointeractive.podato | 1.4.0 | 2020.3.36f1 |
+| com.potatointeractive.podato | 1.5.0 | 2020.3.36f1 |
 
 [Changelog](CHANGELOG.md)
 
@@ -33,7 +33,6 @@ Like JSON, *PoDato* is comprised of **Objects**, **Arrays**, and **Values**
   exampleString : A sentence or string of characters.
   exampleNumber : 0.1030
   exampleBoolean: false
-  exampleNull   : null
 }
 ```
 ```

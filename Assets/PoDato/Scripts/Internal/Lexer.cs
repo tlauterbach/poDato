@@ -19,7 +19,6 @@ namespace PoDato {
 		private static readonly Dictionary<TokenType, IPattern> m_values = new Dictionary<TokenType, IPattern>() {
 			{ TokenType.True, new PatternKeyword("true") },
 			{ TokenType.False, new PatternKeyword("false") },
-			{ TokenType.Null, new PatternKeyword("null") },
 			{ TokenType.Number, new PatternNumber() },
 			{ TokenType.String, new PatternString() }
 		};

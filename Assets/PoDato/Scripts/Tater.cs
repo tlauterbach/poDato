@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PoDato {
@@ -8,7 +7,7 @@ namespace PoDato {
 
 		public string Name { get { return m_name; } }
 		public TaterType Type { get { return m_type; } }
-		public bool IsNull { get { return IsType(TaterType.Null); } }
+		public TaterType ArrayType { get { return m_arrayType; } }
 		public bool IsObject { get { return IsType(TaterType.Object); } }
 		public bool IsArray { get { return IsType(TaterType.Array); } }
 		public bool IsNumber { get { return IsType(TaterType.Number); } }
@@ -227,6 +226,7 @@ namespace PoDato {
 		private TaterType m_type;
 		private Dictionary<string, Tater> m_object;
 		private List<Tater> m_array;
+		private TaterType m_arrayType;
 		private string m_string;
 		private double m_number;
 		private bool m_boolean;
@@ -242,6 +242,7 @@ namespace PoDato {
 			obj.m_name = name;
 			obj.m_array = new List<Tater>();
 			obj.m_type = TaterType.Array;
+			obj.m_arrayType = TaterType.Null;
 			return obj;
 		}
 		public static Tater CreateObject(string name) {
@@ -249,12 +250,6 @@ namespace PoDato {
 			obj.m_name = name;
 			obj.m_object = new Dictionary<string, Tater>();
 			obj.m_type = TaterType.Object;
-			return obj;
-		}
-		public static Tater CreateNull(string name) {
-			Tater obj = new Tater();
-			obj.m_name = name;
-			obj.m_type = TaterType.Null;
 			return obj;
 		}
 		public static Tater CreateString(string name, string value) {
@@ -296,7 +291,16 @@ namespace PoDato {
 		}
 		public void Add(Tater value) {
 			if (IsArray) {
-				m_array.Add(value);
+				if (Count > 0) {
+					if (m_arrayType == value.Type) {
+						m_array.Add(value);
+					} else {
+						throw InvalidCast(value, m_arrayType);
+					}
+				} else {
+					m_arrayType = value.Type;
+					m_array.Add(value);
+				}
 			} else {
 				throw InvalidCast(this, TaterType.Array);
 			}
@@ -317,6 +321,10 @@ namespace PoDato {
 		}
 		public bool IsType(TaterType type) {
 			return m_type == type;
+		}
+
+		public bool IsArrayType(TaterType type) {
+			return IsArray && m_arrayType == type;
 		}
 
 	}

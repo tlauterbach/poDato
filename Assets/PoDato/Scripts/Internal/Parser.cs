@@ -62,9 +62,6 @@
 			} else if (peek == TokenType.False) {
 				stream.Advance();
 				return Tater.CreateBoolean(name, false);
-			} else if (peek == TokenType.Null) {
-				stream.Advance();
-				return Tater.CreateNull(name);
 			}
 			throw new ParseException(peek.Position, $"Unexpected token `{peek.Value}'");
 		}

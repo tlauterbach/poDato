@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] 2022-10-29
+### Added
+- `Array` now holds a type value to enforce a type upon values contained within the `Array`
+### Removed
+- Idea of `null` values to reduce complexity of parsing and reading values. Should also eliminate the need of defining behaviour for null values
 ## [1.4.0] 2022-10-26
 ### Added
 - setters for `Tater` objects and arrays via `this[string key]` and `this[int index]` respectively

@@ -110,10 +110,6 @@ namespace PoDato {
 		private bool DoOptionalCollection<T, U>(string name, ref T collection, ReadFunc<U> reader) where T : ICollection<U>, new() {
 			try {
 				Tater node = Current[name];
-				if (node.IsNull) {
-					collection = default;
-					return false;
-				}
 				collection = new T();
 				for (int ix = 0; ix < node.Count; ix++) {
 					collection.Add(reader(node[ix]));
@@ -128,10 +124,6 @@ namespace PoDato {
 		private bool DoOptionalArray<T>(string name, ref T[] array, ReadFunc<T> reader) {
 			try {
 				Tater node = Current[name];
-				if (node.IsNull) {
-					array = default;
-					return false;
-				}
 				array = new T[node.Count];
 				for (int ix = 0; ix < node.Count; ix++) {
 					array[ix] = reader(node[ix]);
@@ -146,10 +138,6 @@ namespace PoDato {
 		private bool DoOptionalDictionary<T, U>(string name, ref T dictionary, ReadFunc<U> reader) where T : IDictionary<string, U>, new() {
 			try {
 				Tater node = Current[name];
-				if (node.IsNull) {
-					dictionary = default;
-					return false;
-				}
 				dictionary = new T();
 				foreach (string key in node.Keys) {
 					dictionary.Add(key, reader(node[key]));
@@ -172,9 +160,6 @@ namespace PoDato {
 		private void DoRequiredCollection<T, U>(string name, ref T collection, ReadFunc<U> reader) where T : ICollection<U>, new() {
 			try {
 				Tater node = Current[name];
-				if (node.IsNull) {
-					throw new Exception("Value cannot be null");
-				}
 				collection = new T();
 				for (int ix = 0; ix < node.Count; ix++) {
 					collection.Add(reader(node[ix]));
@@ -187,9 +172,6 @@ namespace PoDato {
 		private void DoRequiredArray<T>(string name, ref T[] array, ReadFunc<T> reader) {
 			try {
 				Tater node = Current[name];
-				if (node.IsNull) {
-					throw new Exception("Value cannot be null");
-				}
 				array = new T[node.Count];
 				for (int ix = 0; ix < node.Count; ix++) {
 					array[ix] = reader(node[ix]);
@@ -202,9 +184,6 @@ namespace PoDato {
 		private void DoRequiredDictionary<T, U>(string name, ref T dictionary, ReadFunc<U> reader) where T : IDictionary<string, U>, new() {
 			try {
 				Tater node = Current[name];
-				if (node.IsNull) {
-					throw new Exception("Value cannot be null");
-				}
 				dictionary = new T();
 				foreach (string key in node.Keys) {
 					dictionary.Add(key, reader(node[key]));
@@ -218,343 +197,199 @@ namespace PoDato {
 		#region Conversions
 
 		private T TaterToObject<T>(Tater tater) where T : IReadable, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				Push(tater);
-				T obj = new T();
-				obj.Deserialize(this);
-				Pop();
-				return obj;
-			}
+			Push(tater);
+			T obj = new T();
+			obj.Deserialize(this);
+			Pop();
+			return obj;
 		}
 		private string TaterToString(Tater tater) {
-			if (tater.IsNull) {
-				return string.Empty;
-			} else {
-				return tater.AsString;
-			}
+			return tater.AsString;
 		}
 		private T TaterToStringProxy<T>(Tater tater) where T : IReadProxy<string>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsString);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsString);
+			return value;
 		}
 		private T TaterToEnum<T>(Tater tater) where T : struct, Enum {
-			if (tater.IsNull) {
-				return default;
+			if (Enum.TryParse(tater.AsString, out T result)) {
+				return result;
 			} else {
-				if (Enum.TryParse(tater.AsString, out T result)) {
-					return result;
-				} else {
-					throw new Exception($"Cannot parse `{tater.AsString}' as valid value of {typeof(T).Name}");
-				}
+				throw new Exception($"Cannot parse `{tater.AsString}' as valid value of {typeof(T).Name}");
 			}
 		}
 		private int TaterToInt32(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsInt32;
-			}
+			return tater.AsInt32;
 		}
 		private T TaterToInt32Proxy<T>(Tater tater) where T : IReadProxy<int>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsInt32);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsInt32);
+			return value;
 		}
 		private uint TaterToUInt32(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsUInt32;
-			}
+			return tater.AsUInt32;
 		}
 		private T TaterToUInt32Proxy<T>(Tater tater) where T : IReadProxy<uint>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsUInt32);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsUInt32);
+			return value;
 		}
 		private short TaterToInt16(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsInt16;
-			}
+			return tater.AsInt16;
 		}
 		private T TaterToInt16Proxy<T>(Tater tater) where T : IReadProxy<short>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsInt16);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsInt16);
+			return value;
 		}
 		private ushort TaterToUInt16(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsUInt16;
-			}
+			return tater.AsUInt16;
 		}
 		private T TaterToUInt16Proxy<T>(Tater tater) where T : IReadProxy<ushort>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsUInt16);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsUInt16);
+			return value;
 		}
 		private long TaterToInt64(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsInt64;
-			}
+			return tater.AsInt64;
 		}
 		private T TaterToInt64Proxy<T>(Tater tater) where T : IReadProxy<long>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsInt64);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsInt64);
+			return value;
 		}
 		private ulong TaterToUInt64(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsUInt64;
-			}
+			return tater.AsUInt64;
 		}
 		private T TaterToUInt64Proxy<T>(Tater tater) where T : IReadProxy<ulong>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsUInt64);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsUInt64);
+			return value;
 		}
 		private double TaterToDouble(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsDouble;
-			}
+			return tater.AsDouble;
 		}
 		private T TaterToDoubleProxy<T>(Tater tater) where T : IReadProxy<double>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsDouble);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsDouble);
+			return value;
 		}
 		private float TaterToSingle(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsSingle;
-			}
+			return tater.AsSingle;
 		}
 		private T TaterToSingleProxy<T>(Tater tater) where T : IReadProxy<float>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsSingle);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsSingle);
+			return value;
 		}
 		private bool TaterToBool(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsBool;
-			}
+			return tater.AsBool;
 		}
 		private T TaterToBoolProxy<T>(Tater tater) where T : IReadProxy<bool>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsBool);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsBool);
+			return value;
 		}
 		private byte TaterToByte(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsByte;
-			}
+			return tater.AsByte;
 		}
 		private T TaterToByteProxy<T>(Tater tater) where T : IReadProxy<byte>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsByte);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsByte);
+			return value;
 		}
 		private sbyte TaterToSByte(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				return tater.AsSByte;
-			}
+			return tater.AsSByte;
 		}
 		private T TaterToSByteProxy<T>(Tater tater) where T : IReadProxy<sbyte>, new() {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				T value = new T();
-				value.SetProxyValue(tater.AsSByte);
-				return value;
-			}
+			T value = new T();
+			value.SetProxyValue(tater.AsSByte);
+			return value;
 		}
 		private Vector2 TaterToVector2(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				Vector2 value = new Vector2(
-					tater["x"].AsSingle,
-					tater["y"].AsSingle
-				);
-				return value;
-			}
+			Vector2 value = new Vector2(
+				tater["x"].AsSingle,
+				tater["y"].AsSingle
+			);
+			return value;
 		}
 		private Vector3 TaterToVector3(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				Vector3 value = new Vector3(
-					tater["x"].AsSingle,
-					tater["y"].AsSingle,
-					tater["z"].AsSingle
-				);
-				return value;
-			}
+			Vector3 value = new Vector3(
+				tater["x"].AsSingle,
+				tater["y"].AsSingle,
+				tater["z"].AsSingle
+			);
+			return value;
 		}
 		private Vector4 TaterToVector4(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				Vector4 value = new Vector4(
-					tater["x"].AsSingle,
-					tater["y"].AsSingle,
-					tater["z"].AsSingle,
-					tater["w"].AsSingle
-				);
-				return value;
-			}
+			Vector4 value = new Vector4(
+				tater["x"].AsSingle,
+				tater["y"].AsSingle,
+				tater["z"].AsSingle,
+				tater["w"].AsSingle
+			);
+			return value;
 		}
 		private Vector2Int TaterToVector2Int(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				Vector2Int value = new Vector2Int(
-					tater["x"].AsInt32,
-					tater["y"].AsInt32
-				);
-				return value;
-			}
+			Vector2Int value = new Vector2Int(
+				tater["x"].AsInt32,
+				tater["y"].AsInt32
+			);
+			return value;
 		}
 		private Vector3Int TaterToVector3Int(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				Vector3Int value = new Vector3Int(
-					tater["x"].AsInt32,
-					tater["y"].AsInt32,
-					tater["z"].AsInt32
-				);
-				return value;
-			}
+			Vector3Int value = new Vector3Int(
+				tater["x"].AsInt32,
+				tater["y"].AsInt32,
+				tater["z"].AsInt32
+			);
+			return value;
 		}
 		private Color TaterToColor(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				Color value = new Color(
-					tater["r"].AsSingle,
-					tater["g"].AsSingle,
-					tater["b"].AsSingle,
-					tater.Contains("a",TaterType.Number) ? tater["a"].AsInt32 : 1f
-				);
-				return value;
-			}
+			Color value = new Color(
+				tater["r"].AsSingle,
+				tater["g"].AsSingle,
+				tater["b"].AsSingle,
+				tater.Contains("a",TaterType.Number) ? tater["a"].AsInt32 : 1f
+			);
+			return value;
 		}
 		private Color32 TaterToColor32(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				Color32 value = new Color32(
-					tater["r"].AsByte,
-					tater["g"].AsByte,
-					tater["b"].AsByte,
-					tater.Contains("a", TaterType.Number) ? tater["a"].AsByte : byte.MaxValue
-				);
-				return value;
-			}
+			Color32 value = new Color32(
+				tater["r"].AsByte,
+				tater["g"].AsByte,
+				tater["b"].AsByte,
+				tater.Contains("a", TaterType.Number) ? tater["a"].AsByte : byte.MaxValue
+			);
+			return value;
 		}
 
 		private Rect TaterToRect(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				Rect value = new Rect(
-					tater["x"].AsSingle,
-					tater["y"].AsSingle,
-					tater["width"].AsSingle,
-					tater["height"].AsSingle
-				);
-				return value;
-			}
+			Rect value = new Rect(
+				tater["x"].AsSingle,
+				tater["y"].AsSingle,
+				tater["width"].AsSingle,
+				tater["height"].AsSingle
+			);
+			return value;
 		}
 		private RectInt TaterToRectInt(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				RectInt value = new RectInt(
-					tater["x"].AsInt32,
-					tater["y"].AsInt32,
-					tater["width"].AsInt32,
-					tater["height"].AsInt32
-				);
-				return value;
-			}
+			RectInt value = new RectInt(
+				tater["x"].AsInt32,
+				tater["y"].AsInt32,
+				tater["width"].AsInt32,
+				tater["height"].AsInt32
+			);
+			return value;
 		}
 		private Quaternion TaterToQuaternion(Tater tater) {
-			if (tater.IsNull) {
-				return default;
-			} else {
-				Quaternion value = new Quaternion(
-					tater["x"].AsSingle,
-					tater["y"].AsSingle,
-					tater["z"].AsSingle,
-					tater["w"].AsSingle
-				);
-				return value;
-			}
+			Quaternion value = new Quaternion(
+				tater["x"].AsSingle,
+				tater["y"].AsSingle,
+				tater["z"].AsSingle,
+				tater["w"].AsSingle
+			);
+			return value;
 		}
 
 		#endregion
