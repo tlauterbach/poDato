@@ -7,6 +7,7 @@ namespace PoDato {
 
 		public string Name { get { return m_name; } }
 		public TaterType Type { get { return m_type; } }
+		public int LineNumber { get { return m_lineNumber; } }
 		public TaterType ArrayType { get { return m_arrayType; } }
 		public bool IsObject { get { return IsType(TaterType.Object); } }
 		public bool IsArray { get { return IsType(TaterType.Array); } }
@@ -224,6 +225,7 @@ namespace PoDato {
 
 		private string m_name;
 		private TaterType m_type;
+		private int m_lineNumber = -1;
 		private Dictionary<string, Tater> m_object;
 		private List<Tater> m_array;
 		private TaterType m_arrayType;
@@ -237,38 +239,43 @@ namespace PoDato {
 
 		#region Constructor Functions
 
-		public static Tater CreateArray(string name) {
+		public static Tater CreateArray(string name, int lineNumber = -1) {
 			Tater obj = new Tater();
 			obj.m_name = name;
+			obj.m_lineNumber = lineNumber;
 			obj.m_array = new List<Tater>();
 			obj.m_type = TaterType.Array;
 			obj.m_arrayType = TaterType.Null;
 			return obj;
 		}
-		public static Tater CreateObject(string name) {
+		public static Tater CreateObject(string name, int lineNumber = -1) {
 			Tater obj = new Tater();
 			obj.m_name = name;
+			obj.m_lineNumber = lineNumber;
 			obj.m_object = new Dictionary<string, Tater>();
 			obj.m_type = TaterType.Object;
 			return obj;
 		}
-		public static Tater CreateString(string name, string value) {
+		public static Tater CreateString(string name, string value, int lineNumber = -1) {
 			Tater obj = new Tater();
 			obj.m_name = name;
+			obj.m_lineNumber = lineNumber;
 			obj.m_type = TaterType.String;
 			obj.m_string = value;
 			return obj;
 		}
-		public static Tater CreateNumber(string name, double value) {
+		public static Tater CreateNumber(string name, double value, int lineNumber = -1) {
 			Tater obj = new Tater();
 			obj.m_name = name;
+			obj.m_lineNumber = lineNumber;
 			obj.m_type = TaterType.Number;
 			obj.m_number = value;
 			return obj;
 		}
-		public static Tater CreateBoolean(string name, bool value) {
+		public static Tater CreateBoolean(string name, bool value, int lineNumber = -1) {
 			Tater obj = new Tater();
 			obj.m_name = name;
+			obj.m_lineNumber = lineNumber;
 			obj.m_type = TaterType.Boolean;
 			obj.m_boolean = value;
 			return obj;
