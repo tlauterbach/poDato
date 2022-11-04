@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace PoDato {
 	public interface IReader {
+		void LogError(string error);
 		Tater GetTater();
 		bool OptionalObject<T>(string name, ref T value) where T : IReadable, new();
 		bool OptionalObjectList<T, U>(string name, ref T value) where T : ICollection<U>, new () where U : IReadable, new ();
