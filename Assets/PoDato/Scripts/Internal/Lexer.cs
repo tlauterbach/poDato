@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace PoDato {
 
@@ -59,11 +58,10 @@ namespace PoDato {
 						continue;
 					}
 				} catch (Exception e) {
-					throw new Exception(string.Format("at {0}: {1}", m_stream.Position, e.Message));
+					throw new ParseException(m_stream.Position, e.Message);
 				}
-				throw new Exception(string.Format(
-					"Invalid character `{0}' at {1} in input string",
-					m_stream.Peek(), m_stream.Position
+				throw new ParseException(m_stream.Position, string.Format(
+					"Unrecognized character `{0}' in input", m_stream.Peek()
 				));
 			}
 			return new TokenStream(m_tokens);

@@ -47,7 +47,7 @@ namespace PoDato {
 		public float AsSingle {
 			get {
 				if (IsNumber) {
-					return Convert.ToSingle(m_number);
+					return ConvertNumber(Convert.ToSingle);
 				} else {
 					throw InvalidCast(this, TaterType.Number);
 				}
@@ -56,7 +56,7 @@ namespace PoDato {
 		public int AsInt32 {
 			get {
 				if (IsNumber) {
-					return Convert.ToInt32(m_number);
+					return ConvertNumber(Convert.ToInt32);
 				} else {
 					throw InvalidCast(this, TaterType.Number);
 				}
@@ -65,7 +65,7 @@ namespace PoDato {
 		public short AsInt16 {
 			get {
 				if (IsNumber) {
-					return Convert.ToInt16(m_number);
+					return ConvertNumber(Convert.ToInt16);
 				} else {
 					throw InvalidCast(this, TaterType.Number);
 				}
@@ -74,7 +74,7 @@ namespace PoDato {
 		public long AsInt64 {
 			get {
 				if (IsNumber) {
-					return Convert.ToInt64(m_number);
+					return ConvertNumber(Convert.ToInt64);
 				} else {
 					throw InvalidCast(this, TaterType.Number);
 				}
@@ -83,7 +83,7 @@ namespace PoDato {
 		public uint AsUInt32 {
 			get {
 				if (IsNumber) {
-					return Convert.ToUInt32(m_number);
+					return ConvertNumber(Convert.ToUInt32);
 				} else {
 					throw InvalidCast(this, TaterType.Number);
 				}
@@ -92,7 +92,7 @@ namespace PoDato {
 		public ushort AsUInt16 {
 			get {
 				if (IsNumber) {
-					return Convert.ToUInt16(m_number);
+					return ConvertNumber(Convert.ToUInt16);
 				} else {
 					throw InvalidCast(this, TaterType.Number);
 				}
@@ -101,7 +101,7 @@ namespace PoDato {
 		public ulong AsUInt64 {
 			get {
 				if (IsNumber) {
-					return Convert.ToUInt64(m_number);
+					return ConvertNumber(Convert.ToUInt64);
 				} else {
 					throw InvalidCast(this, TaterType.Number);
 				}
@@ -110,7 +110,7 @@ namespace PoDato {
 		public byte AsByte {
 			get {
 				if (IsNumber) {
-					return Convert.ToByte(m_number);
+					return ConvertNumber(Convert.ToByte);
 				} else {
 					throw InvalidCast(this, TaterType.Number);
 				}
@@ -119,10 +119,18 @@ namespace PoDato {
 		public sbyte AsSByte {
 			get {
 				if (IsNumber) {
-					return Convert.ToSByte(m_number);
+					return ConvertNumber(Convert.ToSByte);
 				} else {
 					throw InvalidCast(this, TaterType.Number);
 				}
+			}
+		}
+
+		private T ConvertNumber<T>(Func<double, T> converter) {
+			try {
+				return converter(m_number);
+			} catch (Exception e) {
+				throw new DeserializationException(this, e.Message);
 			}
 		}
 
@@ -156,7 +164,9 @@ namespace PoDato {
 					if (m_object.ContainsKey(key)) {
 						return m_object[key];
 					} else {
-						throw new KeyNotFoundException($"`{m_name}' does not contain key `{key}'");
+						throw new DeserializationException(this, 
+							$"`{m_name}' does not contain key `{key}'"
+						);
 					}
 				} else {
 					throw InvalidCast(this, TaterType.Object);
@@ -283,9 +293,9 @@ namespace PoDato {
 
 		#endregion
 
-		private static InvalidCastException InvalidCast(Tater from, TaterType to) {
-			return new InvalidCastException(
-				$"Cannot cast field `{from.Name}' from type `{from.Type}' to `{to}'"
+		private static DeserializationException InvalidCast(Tater from, TaterType to) {
+			return new DeserializationException(from,
+				$"Cannot cast field from type `{from.Type}' to `{to}'"
 			);
 		}
 
@@ -333,6 +343,8 @@ namespace PoDato {
 		public bool IsArrayType(TaterType type) {
 			return IsArray && m_arrayType == type;
 		}
+
+		
 
 	}
 

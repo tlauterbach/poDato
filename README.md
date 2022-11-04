@@ -3,7 +3,7 @@ Reader/Writer for Unity/C# for easy to hand-write data file format PoDato
 
 | Package Name | Package Version | Unity Version |
 |-----|-----|-----|
-| com.potatointeractive.podato | 1.6.0 | 2020.3.36f1 |
+| com.potatointeractive.podato | 1.7.0 | 2020.3.36f1 |
 
 [Changelog](CHANGELOG.md)
 

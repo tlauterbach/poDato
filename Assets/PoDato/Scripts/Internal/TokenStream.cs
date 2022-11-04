@@ -19,16 +19,14 @@ namespace PoDato {
 		}
 		public void Expect(TokenType type) {
 			if (IsEndOfFile()) {
-				throw new System.Exception(string.Format(
-					"Unexpected end of file. Expecting " +
-					"`{1}'", type
-				));
+				if (m_input.Count == 0) {
+					throw new ParseException(new FilePosition(1, 1), "Unexpected end of file");
+				} else {
+					throw new ParseException(m_input[m_input.Count - 1].Position, "Unexpected end of file");
+				}
 			}
 			if (Peek() != type) {
-				throw new System.Exception(string.Format(
-					"Unexpected token `{0}' at {1} -- " +
-					"Expecting `{2}'.", Peek().Value, Peek().Position, type
-				));
+				throw new ParseException(Peek().Position, $"Unexpected token `{Peek().Value}'");
 			}
 			Advance();
 		}

@@ -37,15 +37,10 @@ public class Test : MonoBehaviour {
 
 	private void LogErrors<T>(ReadResult<T> result) where T : IReadable, new() {
 		StringBuilder builder = new StringBuilder();
-		bool isFirst = true;
-		for (int ix = 0; ix < result.Errors.Count; ix++) {
-			if (isFirst) {
-				isFirst = false;
-			} else {
-				builder.Append('\n');
-			}
-			builder.Append(result.Errors[ix]);
+		foreach (ReadError error in result.Errors) {
+			builder.Append(error.FullMessage).Append('\n');
 		}
+		builder.Length--;
 		Debug.LogWarning(builder.ToString());
 	}
 
