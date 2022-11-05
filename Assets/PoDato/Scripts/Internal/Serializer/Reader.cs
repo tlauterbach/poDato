@@ -17,6 +17,8 @@ namespace PoDato {
 		private List<string> m_context;
 		private StringBuilder m_builder;
 
+		private bool m_doPopOnLog = false;
+
 		private Tater Current { get { return m_input.Peek(); } }
 
 		public Reader(int tabSize = 4) {
@@ -109,11 +111,19 @@ namespace PoDato {
 			return m_input.Pop();
 		}
 
+		private void CheckLogPop() {
+			if (m_doPopOnLog) {
+				m_doPopOnLog = false;
+				Pop();
+			}
+		}
+
 		private bool DoOptional<T>(string name, ref T value, ReadFunc<T> reader) {
 			try {
 				value = reader(Current[name]);
 				return true;
 			} catch {
+				CheckLogPop();
 				value = default;
 				return false;
 			}
@@ -127,6 +137,7 @@ namespace PoDato {
 				}
 				return true;
 			} catch {
+				CheckLogPop();
 				collection = default;
 				return false;
 			}
@@ -141,6 +152,7 @@ namespace PoDato {
 				}
 				return true;
 			} catch {
+				CheckLogPop();
 				array = default;
 				return false;
 			}
@@ -155,65 +167,120 @@ namespace PoDato {
 				}
 				return true;
 			} catch {
+				CheckLogPop();
 				dictionary = default;
 				return false;
 			}
 		}
 
 		private void DoRequired<T>(string name, ref T value, ReadFunc<T> reader) {
-			try {
-				value = reader(Current[name]);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			} catch (Exception e) {
-				LogError(e.Message);
-				value = default;
+			if (Current.IsObject && Current.Contains(name)) {
+				Push(Current[name]);
+				try {
+					value = reader(Current);
+				} catch (DeserializationException e) {
+					LogError(e);
+					CheckLogPop();
+					value = default;
+				} catch (Exception e) {
+					LogError(e.Message);
+					CheckLogPop();
+					value = default;
+				}
+				Pop();
+			} else if (!Current.IsObject) {
+				LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+			} else {
+				LogError(new DeserializationException(Current, $"{Current.Name} does not contain field named `{name}'"));
 			}
 		}
 		private void DoRequiredCollection<T, U>(string name, ref T collection, ReadFunc<U> reader) where T : ICollection<U>, new() {
-			try {
+			if (Current.IsObject && Current.Contains(name, TaterType.Array)) {
 				Tater node = Current[name];
-				collection = new T();
-				for (int ix = 0; ix < node.Count; ix++) {
-					collection.Add(reader(node[ix]));
+				Push(node);
+				try {
+					collection = new T();
+					for (int ix = 0; ix < node.Count; ix++) {
+						collection.Add(reader(node[ix]));
+					}
+				} catch (DeserializationException e) {
+					LogError(e);
+					CheckLogPop();
+					collection = default;
+				} catch (Exception e) {
+					LogError(e.Message);
+					CheckLogPop();
+					collection = default;
 				}
-			} catch (DeserializationException e) {
-				LogError(e);
-				collection = default;
-			} catch (Exception e) {
-				LogError(e.Message);
-				collection = default;
+				Pop();
+			} else if (!Current.IsObject) {
+				LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+			} else if (Current.Contains(name)) {
+				Push(Current[name]);
+				LogError(new DeserializationException(Current, $"{Current.Name} is not an array"));
+				Pop();
+			} else {
+				LogError(new DeserializationException(Current, $"{Current.Name} does not contain array named `{name}'"));
 			}
 		}
 		private void DoRequiredArray<T>(string name, ref T[] array, ReadFunc<T> reader) {
-			try {
+			if (Current.IsObject && Current.Contains(name, TaterType.Array)) {
 				Tater node = Current[name];
-				array = new T[node.Count];
-				for (int ix = 0; ix < node.Count; ix++) {
-					array[ix] = reader(node[ix]);
+				Push(node);
+				try {
+					array = new T[node.Count];
+					for (int ix = 0; ix < node.Count; ix++) {
+						array[ix] = reader(node[ix]);
+					}
+				} catch (DeserializationException e) {
+					LogError(e);
+					CheckLogPop();
+					array = default;
+				} catch (Exception e) {
+					LogError(e.Message);
+					CheckLogPop();
+					array = default;
 				}
-			} catch (DeserializationException e) {
-				LogError(e);
-				array = default;
-			} catch (Exception e) {
-				LogError(e.Message);
-				array = default;
+				Pop();
+			} else if (!Current.IsObject) {
+				LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+			} else if (Current.Contains(name)) {
+				Push(Current[name]);
+				LogError(new DeserializationException(Current, $"{Current.Name} is not an array"));
+				Pop();
+			} else {
+				LogError(new DeserializationException(Current, $"{Current.Name} does not contain array named `{name}'"));
 			}
 		}
 		private void DoRequiredDictionary<T, U>(string name, ref T dictionary, ReadFunc<U> reader) where T : IDictionary<string, U>, new() {
-			try {
+			if (Current.IsObject && Current.Contains(name, TaterType.Object)) {
 				Tater node = Current[name];
-				dictionary = new T();
-				foreach (string key in node.Keys) {
-					dictionary.Add(key, reader(node[key]));
+				Push(node);
+				try {
+					dictionary = new T();
+					foreach (string key in node.Keys) {
+						dictionary.Add(key, reader(node[key]));
+					}
+				} catch (DeserializationException e) {
+					LogError(e);
+					CheckLogPop();
+					dictionary = default;
+				} catch (Exception e) {
+					LogError(e.Message);
+					CheckLogPop();
+					dictionary = default;
 				}
-			} catch (DeserializationException e) {
-				LogError(e);
-				dictionary = default;
-			} catch (Exception e) {
-				LogError(e.Message);
-				dictionary = default;
+				Pop();
+			} else {
+				if (!Current.IsObject) {
+					LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+				} else if (Current.Contains(name)) {
+					Push(Current[name]);
+					LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+					Pop();
+				} else {
+					LogError(new DeserializationException(Current, $"{Current.Name} does not contain object named `{name}'"));
+				}
 			}
 		}
 
@@ -238,7 +305,7 @@ namespace PoDato {
 			if (Enum.TryParse(tater.AsString, out T result)) {
 				return result;
 			} else {
-				throw new DeserializationException(tater,$"Cannot parse `{tater.AsString}' as valid value of {typeof(T).Name}");
+				throw new DeserializationException(tater, $"Cannot parse `{tater.AsString}' as valid value of {typeof(T).Name}");
 			}
 		}
 		private int TaterToInt32(Tater tater) {
@@ -329,34 +396,60 @@ namespace PoDato {
 			value.SetProxyValue(tater.AsSByte);
 			return value;
 		}
+
+		private float PushTaterToSingle(Tater tater) {
+			Push(tater);
+			try {
+				float value = tater.AsSingle;
+				Pop();
+				return value;
+			} catch (Exception e) {
+				m_doPopOnLog = true;
+				throw e;
+			}
+		}
+		private int PushTaterToInt32(Tater tater) {
+			Push(tater);
+			try {
+				int value = tater.AsInt32;
+				Pop();
+				return value;
+			} catch (Exception e) {
+				m_doPopOnLog = true;
+				throw e;
+			}
+		}
+		private byte PushTaterToByte(Tater tater) {
+			Push(tater);
+			try {
+				byte value = tater.AsByte;
+				Pop();
+				return value;
+			} catch (Exception e) {
+				m_doPopOnLog = true;
+				throw e;
+			}
+		}
+
 		private Vector2 TaterToVector2(Tater tater) {
 			Tater x = tater["x"];
 			Tater y = tater["y"];
-			Vector2 value;
-			Push(tater);
-			try {
-				value = new Vector2(x.AsSingle, y.AsSingle);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			}
-			Pop();
+			Vector2 value = new Vector2(
+				PushTaterToSingle(x), 
+				PushTaterToSingle(y)
+			);
 			return value;
-			
 		}
+
 		private Vector3 TaterToVector3(Tater tater) {
 			Tater x = tater["x"];
 			Tater y = tater["y"];
 			Tater z = tater["z"];
-			Push(tater);
-			Vector3 value;
-			try {
-				value = new Vector3(x.AsSingle, y.AsSingle, z.AsSingle);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			}
-			Pop();
+			Vector3 value = new Vector3(
+				PushTaterToSingle(x),
+				PushTaterToSingle(y),
+				PushTaterToSingle(z)
+			);
 			return value;
 		}
 		private Vector4 TaterToVector4(Tater tater) {
@@ -364,44 +457,32 @@ namespace PoDato {
 			Tater y = tater["y"];
 			Tater z = tater["z"];
 			Tater w = tater["w"];
-			Push(tater);
-			Vector4 value;
-			try {
-				value = new Vector4(x.AsSingle, y.AsSingle, z.AsSingle, w.AsSingle);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			}
-			Pop();
+			Vector4 value = new Vector4(
+				PushTaterToSingle(x),
+				PushTaterToSingle(y),
+				PushTaterToSingle(z),
+				PushTaterToSingle(w)
+			);
 			return value;
 		}
 		private Vector2Int TaterToVector2Int(Tater tater) {
 			Tater x = tater["x"];
 			Tater y = tater["y"];
-			Push(tater);
-			Vector2Int value;
-			try {
-				value = new Vector2Int(x.AsInt32, y.AsInt32);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			}
-			Pop();
+			Vector2Int value = new Vector2Int(
+				PushTaterToInt32(x),
+				PushTaterToInt32(y)
+			);
 			return value;
 		}
 		private Vector3Int TaterToVector3Int(Tater tater) {
 			Tater x = tater["x"];
 			Tater y = tater["y"];
 			Tater z = tater["z"];
-			Push(tater);
-			Vector3Int value;
-			try {
-				value = new Vector3Int(x.AsInt32, y.AsInt32, z.AsInt32);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			}
-			Pop();
+			Vector3Int value = new Vector3Int(
+				PushTaterToInt32(x),
+				PushTaterToInt32(y),
+				PushTaterToInt32(z)
+			);
 			return value;
 		}
 		private Color TaterToColor(Tater tater) {
@@ -409,15 +490,12 @@ namespace PoDato {
 			Tater g = tater["g"];
 			Tater b = tater["b"];
 			Tater a = tater.Contains("a", TaterType.Number) ? tater["a"] : null;
-			Push(tater);
-			Color value;
-			try {
-				value = new Color(r.AsSingle, g.AsSingle, b.AsSingle, a?.AsSingle ?? 1f);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			}
-			Pop();
+			Color value = new Color(
+				PushTaterToSingle(r),
+				PushTaterToSingle(g),
+				PushTaterToSingle(b),
+				(a == null) ? 1f : PushTaterToSingle(a)
+			);
 			return value;
 		}
 		private Color32 TaterToColor32(Tater tater) {
@@ -425,15 +503,12 @@ namespace PoDato {
 			Tater g = tater["g"];
 			Tater b = tater["b"];
 			Tater a = tater.Contains("a", TaterType.Number) ? tater["a"] : null;
-			Push(tater);
-			Color32 value;
-			try {
-				value = new Color32(r.AsByte, g.AsByte, b.AsByte, a?.AsByte ?? byte.MaxValue);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			}
-			Pop();
+			Color32 value = new Color32(
+				PushTaterToByte(r),
+				PushTaterToByte(g),
+				PushTaterToByte(b),
+				(a == null) ? byte.MaxValue : PushTaterToByte(a)
+			);
 			return value;
 		}
 
@@ -442,15 +517,12 @@ namespace PoDato {
 			Tater y = tater["y"];
 			Tater width = tater["width"];
 			Tater height = tater["height"];
-			Push(tater);
-			Rect value;
-			try {
-				value = new Rect(x.AsSingle, y.AsSingle, width.AsSingle, height.AsSingle);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			}
-			Pop();
+			Rect value = new Rect(
+				PushTaterToSingle(x),
+				PushTaterToSingle(y),
+				PushTaterToSingle(width),
+				PushTaterToSingle(height)
+			);
 			return value;
 		}
 		private RectInt TaterToRectInt(Tater tater) {
@@ -458,15 +530,12 @@ namespace PoDato {
 			Tater y = tater["y"];
 			Tater width = tater["width"];
 			Tater height = tater["height"];
-			Push(tater);
-			RectInt value;
-			try {
-				value = new RectInt(x.AsInt32, y.AsInt32, width.AsInt32, height.AsInt32);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			}
-			Pop();
+			RectInt value = new RectInt(
+				PushTaterToInt32(x),
+				PushTaterToInt32(y),
+				PushTaterToInt32(width),
+				PushTaterToInt32(height)
+			);
 			return value;
 		}
 		private Quaternion TaterToQuaternion(Tater tater) {
@@ -474,15 +543,12 @@ namespace PoDato {
 			Tater y = tater["y"];
 			Tater z = tater["z"];
 			Tater w = tater["w"];
-			Push(tater);
-			Quaternion value;
-			try {
-				value = new Quaternion(x.AsSingle, y.AsSingle, z.AsSingle, w.AsSingle);
-			} catch (DeserializationException e) {
-				LogError(e);
-				value = default;
-			}
-			Pop();
+			Quaternion value = new Quaternion(
+				PushTaterToSingle(x),
+				PushTaterToSingle(y),
+				PushTaterToSingle(z),
+				PushTaterToSingle(w)
+			);
 			return value;
 		}
 
@@ -496,20 +562,12 @@ namespace PoDato {
 			--m_builder.Length;
 			return m_builder.ToString();
 		}
-		private string BuildPath(Tater current) {
-			m_builder.Clear();
-			foreach (string context in m_context) {
-				m_builder.Append(context).Append(".");
-			}
-			m_builder.Append(current.Name);
-			return m_builder.ToString();
-		}
 
 		private void LogError(ParseException exception) {
 			m_errors.Add(new ReadError(exception));
 		}
 		private void LogError(DeserializationException exception) {
-			m_errors.Add(new ReadError(exception, BuildPath(exception.Tater)));
+			m_errors.Add(new ReadError(exception, BuildPath()));
 		}
 
 		#region IReader
