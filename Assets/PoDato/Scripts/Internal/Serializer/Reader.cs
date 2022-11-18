@@ -632,6 +632,9 @@ namespace PoDato {
 		public bool OptionalObjectList<T, U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadable, new() {
 			return DoOptionalCollection(name, ref value, TaterToObject<U>);
 		}
+		public bool OptionalObjectReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadable, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToObject<T>);
+		}
 		public bool OptionalObjectArray<T>(string name, ref T[] value) where T : IReadable, new() {
 			return DoOptionalArray(name, ref value, TaterToObject<T>);
 		}
@@ -654,6 +657,9 @@ namespace PoDato {
 		public void RequiredObjectArray<T>(string name, ref T[] value) where T : IReadable, new() {
 			DoRequiredArray(name, ref value, TaterToObject<T>);
 		}
+		public void RequiredObjectReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadable, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToObject<T>);
+		}
 
 
 		public bool OptionalEnum<T>(string name, ref T value) where T : struct, Enum {
@@ -661,6 +667,9 @@ namespace PoDato {
 		}
 		public bool OptionalEnumList<T, U>(string name, ref T value) where T : ICollection<U>, new() where U : struct, Enum {
 			return DoOptionalCollection(name, ref value, TaterToEnum<U>);
+		}
+		public bool OptionalEnumReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : struct, Enum {
+			return DoOptionalReadOnlyList(name, ref value, TaterToEnum<T>);
 		}
 		public bool OptionalEnumArray<T>(string name, ref T[] value) where T : struct, Enum {
 			return DoOptionalArray(name, ref value, TaterToEnum<T>);
@@ -673,6 +682,9 @@ namespace PoDato {
 		}
 		public void RequiredEnumList<T, U>(string name, ref T value) where T : ICollection<U>, new() where U : struct, Enum {
 			DoRequiredCollection(name, ref value, TaterToEnum<U>);
+		}
+		public void RequiredEnumReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : struct, Enum {
+			DoRequiredReadOnlyList(name, ref value, TaterToEnum<T>);
 		}
 		public void RequiredEnumArray<T>(string name, ref T[] value) where T : struct, Enum {
 			DoRequiredArray(name, ref value, TaterToEnum<T>);

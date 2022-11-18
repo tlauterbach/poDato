@@ -9,19 +9,23 @@ namespace PoDato {
 		Tater GetTater();
 		bool OptionalObject<T>(string name, ref T value) where T : IReadable, new();
 		bool OptionalObjectList<T, U>(string name, ref T value) where T : ICollection<U>, new () where U : IReadable, new ();
+		bool OptionalObjectReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadable, new();
 		bool OptionalObjectArray<T>(string name, ref T[] value) where T : IReadable, new();
 		bool OptionalObjectMap<T, U>(string name, ref T value) where T : IDictionary<string, U>, new() where U : IReadable, new();
 		void RequiredObject<T>(string name, ref T value) where T : IReadable, new();
 		void RequiredObjectList<T, U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadable, new();
 		void RequiredObjectMap<T, U>(string name, ref T value) where T : IDictionary<string, U>, new() where U : IReadable, new();
 		void RequiredObjectArray<T>(string name, ref T[] value) where T : IReadable, new();
+		void RequiredObjectReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadable, new();
 		bool OptionalEnum<T>(string name, ref T value) where T : struct, Enum;
 		bool OptionalEnumList<T, U>(string name, ref T value) where T : ICollection<U>, new() where U : struct, Enum;
 		bool OptionalEnumArray<T>(string name, ref T[] value) where T : struct, Enum;
+		bool OptionalEnumReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : struct, Enum;
 		bool OptionalEnumMap<T, U>(string name, ref T value) where T : IDictionary<string, U>, new() where U : struct, Enum;
 		void RequiredEnum<T>(string name, ref T value) where T : struct, Enum;
 		void RequiredEnumList<T, U>(string name, ref T value) where T : ICollection<U>, new() where U : struct, Enum;
 		void RequiredEnumArray<T>(string name, ref T[] value) where T : struct, Enum;
+		void RequiredEnumReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : struct, Enum;
 		void RequiredEnumMap<T, U>(string name, ref T value) where T : IDictionary<string, U>, new() where U : struct, Enum;
 		// string
 		bool OptionalString(string name, ref string value);
