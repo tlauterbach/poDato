@@ -11,6 +11,9 @@ namespace PoDato {
 		public bool OptionalStringList<T>(string name, ref T value) where T : ICollection<string>, new() {
 			return DoOptionalCollection(name, ref value, TaterToString);
 		}
+		public bool OptionalStringReadOnlyList(string name, ref IReadOnlyList<string> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToString);
+		}
 		public bool OptionalStringArray(string name, ref string[] value) {
 			return DoOptionalArray(name, ref value, TaterToString);
 		}
@@ -22,6 +25,9 @@ namespace PoDato {
 		}
 		public bool OptionalStringProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<string>, new() {
 			return DoOptionalCollection(name, ref value, TaterToStringProxy<U>);
+		}
+		public bool OptionalStringProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<string>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToStringProxy<T>);
 		}
 		public bool OptionalStringProxyArray<T>(string name, ref T[] value) where T : IReadProxy<string>, new() {
 			return DoOptionalArray(name, ref value, TaterToStringProxy<T>);
@@ -35,6 +41,9 @@ namespace PoDato {
 		public void RequiredStringList<T>(string name, ref T value) where T : ICollection<string>, new() {
 			DoRequiredCollection(name, ref value, TaterToString);
 		}
+		public void RequiredStringReadOnlyList(string name, ref IReadOnlyList<string> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToString);
+		}
 		public void RequiredStringArray(string name, ref string[] value) {
 			DoRequiredArray(name, ref value, TaterToString);
 		}
@@ -46,6 +55,9 @@ namespace PoDato {
 		}
 		public void RequiredStringProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<string>, new() {
 			DoRequiredCollection(name, ref value, TaterToStringProxy<U>);
+		}
+		public void RequiredStringProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<string>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToStringProxy<T>);
 		}
 		public void RequiredStringProxyArray<T>(string name, ref T[] value) where T : IReadProxy<string>, new() {
 			DoRequiredArray(name, ref value, TaterToStringProxy<T>);
@@ -59,6 +71,9 @@ namespace PoDato {
 		public bool OptionalInt32List<T>(string name, ref T value) where T : ICollection<int>, new() {
 			return DoOptionalCollection(name, ref value, TaterToInt32);
 		}
+		public bool OptionalInt32ReadOnlyList(string name, ref IReadOnlyList<int> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToInt32);
+		}
 		public bool OptionalInt32Array(string name, ref int[] value) {
 			return DoOptionalArray(name, ref value, TaterToInt32);
 		}
@@ -70,6 +85,9 @@ namespace PoDato {
 		}
 		public bool OptionalInt32ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<int>, new() {
 			return DoOptionalCollection(name, ref value, TaterToInt32Proxy<U>);
+		}
+		public bool OptionalInt32ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<int>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToInt32Proxy<T>);
 		}
 		public bool OptionalInt32ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<int>, new() {
 			return DoOptionalArray(name, ref value, TaterToInt32Proxy<T>);
@@ -83,6 +101,9 @@ namespace PoDato {
 		public void RequiredInt32List<T>(string name, ref T value) where T : ICollection<int>, new() {
 			DoRequiredCollection(name, ref value, TaterToInt32);
 		}
+		public void RequiredInt32ReadOnlyList(string name, ref IReadOnlyList<int> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToInt32);
+		}
 		public void RequiredInt32Array(string name, ref int[] value) {
 			DoRequiredArray(name, ref value, TaterToInt32);
 		}
@@ -94,6 +115,9 @@ namespace PoDato {
 		}
 		public void RequiredInt32ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<int>, new() {
 			DoRequiredCollection(name, ref value, TaterToInt32Proxy<U>);
+		}
+		public void RequiredInt32ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<int>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToInt32Proxy<T>);
 		}
 		public void RequiredInt32ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<int>, new() {
 			DoRequiredArray(name, ref value, TaterToInt32Proxy<T>);
@@ -107,6 +131,9 @@ namespace PoDato {
 		public bool OptionalInt16List<T>(string name, ref T value) where T : ICollection<short>, new() {
 			return DoOptionalCollection(name, ref value, TaterToInt16);
 		}
+		public bool OptionalInt16ReadOnlyList(string name, ref IReadOnlyList<short> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToInt16);
+		}
 		public bool OptionalInt16Array(string name, ref short[] value) {
 			return DoOptionalArray(name, ref value, TaterToInt16);
 		}
@@ -118,6 +145,9 @@ namespace PoDato {
 		}
 		public bool OptionalInt16ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<short>, new() {
 			return DoOptionalCollection(name, ref value, TaterToInt16Proxy<U>);
+		}
+		public bool OptionalInt16ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<short>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToInt16Proxy<T>);
 		}
 		public bool OptionalInt16ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<short>, new() {
 			return DoOptionalArray(name, ref value, TaterToInt16Proxy<T>);
@@ -131,6 +161,9 @@ namespace PoDato {
 		public void RequiredInt16List<T>(string name, ref T value) where T : ICollection<short>, new() {
 			DoRequiredCollection(name, ref value, TaterToInt16);
 		}
+		public void RequiredInt16ReadOnlyList(string name, ref IReadOnlyList<short> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToInt16);
+		}
 		public void RequiredInt16Array(string name, ref short[] value) {
 			DoRequiredArray(name, ref value, TaterToInt16);
 		}
@@ -142,6 +175,9 @@ namespace PoDato {
 		}
 		public void RequiredInt16ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<short>, new() {
 			DoRequiredCollection(name, ref value, TaterToInt16Proxy<U>);
+		}
+		public void RequiredInt16ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<short>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToInt16Proxy<T>);
 		}
 		public void RequiredInt16ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<short>, new() {
 			DoRequiredArray(name, ref value, TaterToInt16Proxy<T>);
@@ -155,6 +191,9 @@ namespace PoDato {
 		public bool OptionalInt64List<T>(string name, ref T value) where T : ICollection<long>, new() {
 			return DoOptionalCollection(name, ref value, TaterToInt64);
 		}
+		public bool OptionalInt64ReadOnlyList(string name, ref IReadOnlyList<long> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToInt64);
+		}
 		public bool OptionalInt64Array(string name, ref long[] value) {
 			return DoOptionalArray(name, ref value, TaterToInt64);
 		}
@@ -166,6 +205,9 @@ namespace PoDato {
 		}
 		public bool OptionalInt64ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<long>, new() {
 			return DoOptionalCollection(name, ref value, TaterToInt64Proxy<U>);
+		}
+		public bool OptionalInt64ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<long>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToInt64Proxy<T>);
 		}
 		public bool OptionalInt64ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<long>, new() {
 			return DoOptionalArray(name, ref value, TaterToInt64Proxy<T>);
@@ -179,6 +221,9 @@ namespace PoDato {
 		public void RequiredInt64List<T>(string name, ref T value) where T : ICollection<long>, new() {
 			DoRequiredCollection(name, ref value, TaterToInt64);
 		}
+		public void RequiredInt64ReadOnlyList(string name, ref IReadOnlyList<long> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToInt64);
+		}
 		public void RequiredInt64Array(string name, ref long[] value) {
 			DoRequiredArray(name, ref value, TaterToInt64);
 		}
@@ -190,6 +235,9 @@ namespace PoDato {
 		}
 		public void RequiredInt64ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<long>, new() {
 			DoRequiredCollection(name, ref value, TaterToInt64Proxy<U>);
+		}
+		public void RequiredInt64ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<long>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToInt64Proxy<T>);
 		}
 		public void RequiredInt64ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<long>, new() {
 			DoRequiredArray(name, ref value, TaterToInt64Proxy<T>);
@@ -203,6 +251,9 @@ namespace PoDato {
 		public bool OptionalUInt32List<T>(string name, ref T value) where T : ICollection<uint>, new() {
 			return DoOptionalCollection(name, ref value, TaterToUInt32);
 		}
+		public bool OptionalUInt32ReadOnlyList(string name, ref IReadOnlyList<uint> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToUInt32);
+		}
 		public bool OptionalUInt32Array(string name, ref uint[] value) {
 			return DoOptionalArray(name, ref value, TaterToUInt32);
 		}
@@ -214,6 +265,9 @@ namespace PoDato {
 		}
 		public bool OptionalUInt32ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<uint>, new() {
 			return DoOptionalCollection(name, ref value, TaterToUInt32Proxy<U>);
+		}
+		public bool OptionalUInt32ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<uint>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToUInt32Proxy<T>);
 		}
 		public bool OptionalUInt32ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<uint>, new() {
 			return DoOptionalArray(name, ref value, TaterToUInt32Proxy<T>);
@@ -227,6 +281,9 @@ namespace PoDato {
 		public void RequiredUInt32List<T>(string name, ref T value) where T : ICollection<uint>, new() {
 			DoRequiredCollection(name, ref value, TaterToUInt32);
 		}
+		public void RequiredUInt32ReadOnlyList(string name, ref IReadOnlyList<uint> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToUInt32);
+		}
 		public void RequiredUInt32Array(string name, ref uint[] value) {
 			DoRequiredArray(name, ref value, TaterToUInt32);
 		}
@@ -238,6 +295,9 @@ namespace PoDato {
 		}
 		public void RequiredUInt32ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<uint>, new() {
 			DoRequiredCollection(name, ref value, TaterToUInt32Proxy<U>);
+		}
+		public void RequiredUInt32ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<uint>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToUInt32Proxy<T>);
 		}
 		public void RequiredUInt32ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<uint>, new() {
 			DoRequiredArray(name, ref value, TaterToUInt32Proxy<T>);
@@ -251,6 +311,9 @@ namespace PoDato {
 		public bool OptionalUInt16List<T>(string name, ref T value) where T : ICollection<ushort>, new() {
 			return DoOptionalCollection(name, ref value, TaterToUInt16);
 		}
+		public bool OptionalUInt16ReadOnlyList(string name, ref IReadOnlyList<ushort> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToUInt16);
+		}
 		public bool OptionalUInt16Array(string name, ref ushort[] value) {
 			return DoOptionalArray(name, ref value, TaterToUInt16);
 		}
@@ -262,6 +325,9 @@ namespace PoDato {
 		}
 		public bool OptionalUInt16ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<ushort>, new() {
 			return DoOptionalCollection(name, ref value, TaterToUInt16Proxy<U>);
+		}
+		public bool OptionalUInt16ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<ushort>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToUInt16Proxy<T>);
 		}
 		public bool OptionalUInt16ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<ushort>, new() {
 			return DoOptionalArray(name, ref value, TaterToUInt16Proxy<T>);
@@ -275,6 +341,9 @@ namespace PoDato {
 		public void RequiredUInt16List<T>(string name, ref T value) where T : ICollection<ushort>, new() {
 			DoRequiredCollection(name, ref value, TaterToUInt16);
 		}
+		public void RequiredUInt16ReadOnlyList(string name, ref IReadOnlyList<ushort> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToUInt16);
+		}
 		public void RequiredUInt16Array(string name, ref ushort[] value) {
 			DoRequiredArray(name, ref value, TaterToUInt16);
 		}
@@ -286,6 +355,9 @@ namespace PoDato {
 		}
 		public void RequiredUInt16ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<ushort>, new() {
 			DoRequiredCollection(name, ref value, TaterToUInt16Proxy<U>);
+		}
+		public void RequiredUInt16ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<ushort>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToUInt16Proxy<T>);
 		}
 		public void RequiredUInt16ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<ushort>, new() {
 			DoRequiredArray(name, ref value, TaterToUInt16Proxy<T>);
@@ -299,6 +371,9 @@ namespace PoDato {
 		public bool OptionalUInt64List<T>(string name, ref T value) where T : ICollection<ulong>, new() {
 			return DoOptionalCollection(name, ref value, TaterToUInt64);
 		}
+		public bool OptionalUInt64ReadOnlyList(string name, ref IReadOnlyList<ulong> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToUInt64);
+		}
 		public bool OptionalUInt64Array(string name, ref ulong[] value) {
 			return DoOptionalArray(name, ref value, TaterToUInt64);
 		}
@@ -310,6 +385,9 @@ namespace PoDato {
 		}
 		public bool OptionalUInt64ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<ulong>, new() {
 			return DoOptionalCollection(name, ref value, TaterToUInt64Proxy<U>);
+		}
+		public bool OptionalUInt64ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<ulong>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToUInt64Proxy<T>);
 		}
 		public bool OptionalUInt64ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<ulong>, new() {
 			return DoOptionalArray(name, ref value, TaterToUInt64Proxy<T>);
@@ -323,6 +401,9 @@ namespace PoDato {
 		public void RequiredUInt64List<T>(string name, ref T value) where T : ICollection<ulong>, new() {
 			DoRequiredCollection(name, ref value, TaterToUInt64);
 		}
+		public void RequiredUInt64ReadOnlyList(string name, ref IReadOnlyList<ulong> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToUInt64);
+		}
 		public void RequiredUInt64Array(string name, ref ulong[] value) {
 			DoRequiredArray(name, ref value, TaterToUInt64);
 		}
@@ -334,6 +415,9 @@ namespace PoDato {
 		}
 		public void RequiredUInt64ProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<ulong>, new() {
 			DoRequiredCollection(name, ref value, TaterToUInt64Proxy<U>);
+		}
+		public void RequiredUInt64ProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<ulong>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToUInt64Proxy<T>);
 		}
 		public void RequiredUInt64ProxyArray<T>(string name, ref T[] value) where T : IReadProxy<ulong>, new() {
 			DoRequiredArray(name, ref value, TaterToUInt64Proxy<T>);
@@ -347,6 +431,9 @@ namespace PoDato {
 		public bool OptionalSingleList<T>(string name, ref T value) where T : ICollection<float>, new() {
 			return DoOptionalCollection(name, ref value, TaterToSingle);
 		}
+		public bool OptionalSingleReadOnlyList(string name, ref IReadOnlyList<float> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToSingle);
+		}
 		public bool OptionalSingleArray(string name, ref float[] value) {
 			return DoOptionalArray(name, ref value, TaterToSingle);
 		}
@@ -358,6 +445,9 @@ namespace PoDato {
 		}
 		public bool OptionalSingleProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<float>, new() {
 			return DoOptionalCollection(name, ref value, TaterToSingleProxy<U>);
+		}
+		public bool OptionalSingleProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<float>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToSingleProxy<T>);
 		}
 		public bool OptionalSingleProxyArray<T>(string name, ref T[] value) where T : IReadProxy<float>, new() {
 			return DoOptionalArray(name, ref value, TaterToSingleProxy<T>);
@@ -371,6 +461,9 @@ namespace PoDato {
 		public void RequiredSingleList<T>(string name, ref T value) where T : ICollection<float>, new() {
 			DoRequiredCollection(name, ref value, TaterToSingle);
 		}
+		public void RequiredSingleReadOnlyList(string name, ref IReadOnlyList<float> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToSingle);
+		}
 		public void RequiredSingleArray(string name, ref float[] value) {
 			DoRequiredArray(name, ref value, TaterToSingle);
 		}
@@ -382,6 +475,9 @@ namespace PoDato {
 		}
 		public void RequiredSingleProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<float>, new() {
 			DoRequiredCollection(name, ref value, TaterToSingleProxy<U>);
+		}
+		public void RequiredSingleProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<float>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToSingleProxy<T>);
 		}
 		public void RequiredSingleProxyArray<T>(string name, ref T[] value) where T : IReadProxy<float>, new() {
 			DoRequiredArray(name, ref value, TaterToSingleProxy<T>);
@@ -395,6 +491,9 @@ namespace PoDato {
 		public bool OptionalDoubleList<T>(string name, ref T value) where T : ICollection<double>, new() {
 			return DoOptionalCollection(name, ref value, TaterToDouble);
 		}
+		public bool OptionalDoubleReadOnlyList(string name, ref IReadOnlyList<double> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToDouble);
+		}
 		public bool OptionalDoubleArray(string name, ref double[] value) {
 			return DoOptionalArray(name, ref value, TaterToDouble);
 		}
@@ -406,6 +505,9 @@ namespace PoDato {
 		}
 		public bool OptionalDoubleProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<double>, new() {
 			return DoOptionalCollection(name, ref value, TaterToDoubleProxy<U>);
+		}
+		public bool OptionalDoubleProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<double>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToDoubleProxy<T>);
 		}
 		public bool OptionalDoubleProxyArray<T>(string name, ref T[] value) where T : IReadProxy<double>, new() {
 			return DoOptionalArray(name, ref value, TaterToDoubleProxy<T>);
@@ -419,6 +521,9 @@ namespace PoDato {
 		public void RequiredDoubleList<T>(string name, ref T value) where T : ICollection<double>, new() {
 			DoRequiredCollection(name, ref value, TaterToDouble);
 		}
+		public void RequiredDoubleReadOnlyList(string name, ref IReadOnlyList<double> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToDouble);
+		}
 		public void RequiredDoubleArray(string name, ref double[] value) {
 			DoRequiredArray(name, ref value, TaterToDouble);
 		}
@@ -430,6 +535,9 @@ namespace PoDato {
 		}
 		public void RequiredDoubleProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<double>, new() {
 			DoRequiredCollection(name, ref value, TaterToDoubleProxy<U>);
+		}
+		public void RequiredDoubleProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<double>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToDoubleProxy<T>);
 		}
 		public void RequiredDoubleProxyArray<T>(string name, ref T[] value) where T : IReadProxy<double>, new() {
 			DoRequiredArray(name, ref value, TaterToDoubleProxy<T>);
@@ -443,6 +551,9 @@ namespace PoDato {
 		public bool OptionalByteList<T>(string name, ref T value) where T : ICollection<byte>, new() {
 			return DoOptionalCollection(name, ref value, TaterToByte);
 		}
+		public bool OptionalByteReadOnlyList(string name, ref IReadOnlyList<byte> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToByte);
+		}
 		public bool OptionalByteArray(string name, ref byte[] value) {
 			return DoOptionalArray(name, ref value, TaterToByte);
 		}
@@ -454,6 +565,9 @@ namespace PoDato {
 		}
 		public bool OptionalByteProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<byte>, new() {
 			return DoOptionalCollection(name, ref value, TaterToByteProxy<U>);
+		}
+		public bool OptionalByteProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<byte>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToByteProxy<T>);
 		}
 		public bool OptionalByteProxyArray<T>(string name, ref T[] value) where T : IReadProxy<byte>, new() {
 			return DoOptionalArray(name, ref value, TaterToByteProxy<T>);
@@ -467,6 +581,9 @@ namespace PoDato {
 		public void RequiredByteList<T>(string name, ref T value) where T : ICollection<byte>, new() {
 			DoRequiredCollection(name, ref value, TaterToByte);
 		}
+		public void RequiredByteReadOnlyList(string name, ref IReadOnlyList<byte> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToByte);
+		}
 		public void RequiredByteArray(string name, ref byte[] value) {
 			DoRequiredArray(name, ref value, TaterToByte);
 		}
@@ -478,6 +595,9 @@ namespace PoDato {
 		}
 		public void RequiredByteProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<byte>, new() {
 			DoRequiredCollection(name, ref value, TaterToByteProxy<U>);
+		}
+		public void RequiredByteProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<byte>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToByteProxy<T>);
 		}
 		public void RequiredByteProxyArray<T>(string name, ref T[] value) where T : IReadProxy<byte>, new() {
 			DoRequiredArray(name, ref value, TaterToByteProxy<T>);
@@ -491,6 +611,9 @@ namespace PoDato {
 		public bool OptionalSByteList<T>(string name, ref T value) where T : ICollection<sbyte>, new() {
 			return DoOptionalCollection(name, ref value, TaterToSByte);
 		}
+		public bool OptionalSByteReadOnlyList(string name, ref IReadOnlyList<sbyte> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToSByte);
+		}
 		public bool OptionalSByteArray(string name, ref sbyte[] value) {
 			return DoOptionalArray(name, ref value, TaterToSByte);
 		}
@@ -502,6 +625,9 @@ namespace PoDato {
 		}
 		public bool OptionalSByteProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<sbyte>, new() {
 			return DoOptionalCollection(name, ref value, TaterToSByteProxy<U>);
+		}
+		public bool OptionalSByteProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<sbyte>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToSByteProxy<T>);
 		}
 		public bool OptionalSByteProxyArray<T>(string name, ref T[] value) where T : IReadProxy<sbyte>, new() {
 			return DoOptionalArray(name, ref value, TaterToSByteProxy<T>);
@@ -515,6 +641,9 @@ namespace PoDato {
 		public void RequiredSByteList<T>(string name, ref T value) where T : ICollection<sbyte>, new() {
 			DoRequiredCollection(name, ref value, TaterToSByte);
 		}
+		public void RequiredSByteReadOnlyList(string name, ref IReadOnlyList<sbyte> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToSByte);
+		}
 		public void RequiredSByteArray(string name, ref sbyte[] value) {
 			DoRequiredArray(name, ref value, TaterToSByte);
 		}
@@ -526,6 +655,9 @@ namespace PoDato {
 		}
 		public void RequiredSByteProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<sbyte>, new() {
 			DoRequiredCollection(name, ref value, TaterToSByteProxy<U>);
+		}
+		public void RequiredSByteProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<sbyte>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToSByteProxy<T>);
 		}
 		public void RequiredSByteProxyArray<T>(string name, ref T[] value) where T : IReadProxy<sbyte>, new() {
 			DoRequiredArray(name, ref value, TaterToSByteProxy<T>);
@@ -539,6 +671,9 @@ namespace PoDato {
 		public bool OptionalBoolList<T>(string name, ref T value) where T : ICollection<bool>, new() {
 			return DoOptionalCollection(name, ref value, TaterToBool);
 		}
+		public bool OptionalBoolReadOnlyList(string name, ref IReadOnlyList<bool> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToBool);
+		}
 		public bool OptionalBoolArray(string name, ref bool[] value) {
 			return DoOptionalArray(name, ref value, TaterToBool);
 		}
@@ -550,6 +685,9 @@ namespace PoDato {
 		}
 		public bool OptionalBoolProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<bool>, new() {
 			return DoOptionalCollection(name, ref value, TaterToBoolProxy<U>);
+		}
+		public bool OptionalBoolProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<bool>, new() {
+			return DoOptionalReadOnlyList(name, ref value, TaterToBoolProxy<T>);
 		}
 		public bool OptionalBoolProxyArray<T>(string name, ref T[] value) where T : IReadProxy<bool>, new() {
 			return DoOptionalArray(name, ref value, TaterToBoolProxy<T>);
@@ -563,6 +701,9 @@ namespace PoDato {
 		public void RequiredBoolList<T>(string name, ref T value) where T : ICollection<bool>, new() {
 			DoRequiredCollection(name, ref value, TaterToBool);
 		}
+		public void RequiredBoolReadOnlyList(string name, ref IReadOnlyList<bool> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToBool);
+		}
 		public void RequiredBoolArray(string name, ref bool[] value) {
 			DoRequiredArray(name, ref value, TaterToBool);
 		}
@@ -574,6 +715,9 @@ namespace PoDato {
 		}
 		public void RequiredBoolProxyList<T,U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadProxy<bool>, new() {
 			DoRequiredCollection(name, ref value, TaterToBoolProxy<U>);
+		}
+		public void RequiredBoolProxyReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadProxy<bool>, new() {
+			DoRequiredReadOnlyList(name, ref value, TaterToBoolProxy<T>);
 		}
 		public void RequiredBoolProxyArray<T>(string name, ref T[] value) where T : IReadProxy<bool>, new() {
 			DoRequiredArray(name, ref value, TaterToBoolProxy<T>);
@@ -587,6 +731,9 @@ namespace PoDato {
 		public bool OptionalVector2List<T>(string name, ref T value) where T : ICollection<Vector2>, new() {
 			return DoOptionalCollection(name, ref value, TaterToVector2);
 		}
+		public bool OptionalVector2ReadOnlyList(string name, ref IReadOnlyList<Vector2> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToVector2);
+		}
 		public bool OptionalVector2Array(string name, ref Vector2[] value) {
 			return DoOptionalArray(name, ref value, TaterToVector2);
 		}
@@ -598,6 +745,9 @@ namespace PoDato {
 		}
 		public void RequiredVector2List<T>(string name, ref T value) where T : ICollection<Vector2>, new() {
 			DoRequiredCollection(name, ref value, TaterToVector2);
+		}
+		public void RequiredVector2ReadOnlyList(string name, ref IReadOnlyList<Vector2> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToVector2);
 		}
 		public void RequiredVector2Array(string name, ref Vector2[] value) {
 			DoRequiredArray(name, ref value, TaterToVector2);
@@ -611,6 +761,9 @@ namespace PoDato {
 		public bool OptionalVector3List<T>(string name, ref T value) where T : ICollection<Vector3>, new() {
 			return DoOptionalCollection(name, ref value, TaterToVector3);
 		}
+		public bool OptionalVector3ReadOnlyList(string name, ref IReadOnlyList<Vector3> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToVector3);
+		}
 		public bool OptionalVector3Array(string name, ref Vector3[] value) {
 			return DoOptionalArray(name, ref value, TaterToVector3);
 		}
@@ -622,6 +775,9 @@ namespace PoDato {
 		}
 		public void RequiredVector3List<T>(string name, ref T value) where T : ICollection<Vector3>, new() {
 			DoRequiredCollection(name, ref value, TaterToVector3);
+		}
+		public void RequiredVector3ReadOnlyList(string name, ref IReadOnlyList<Vector3> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToVector3);
 		}
 		public void RequiredVector3Array(string name, ref Vector3[] value) {
 			DoRequiredArray(name, ref value, TaterToVector3);
@@ -635,6 +791,9 @@ namespace PoDato {
 		public bool OptionalVector4List<T>(string name, ref T value) where T : ICollection<Vector4>, new() {
 			return DoOptionalCollection(name, ref value, TaterToVector4);
 		}
+		public bool OptionalVector4ReadOnlyList(string name, ref IReadOnlyList<Vector4> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToVector4);
+		}
 		public bool OptionalVector4Array(string name, ref Vector4[] value) {
 			return DoOptionalArray(name, ref value, TaterToVector4);
 		}
@@ -646,6 +805,9 @@ namespace PoDato {
 		}
 		public void RequiredVector4List<T>(string name, ref T value) where T : ICollection<Vector4>, new() {
 			DoRequiredCollection(name, ref value, TaterToVector4);
+		}
+		public void RequiredVector4ReadOnlyList(string name, ref IReadOnlyList<Vector4> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToVector4);
 		}
 		public void RequiredVector4Array(string name, ref Vector4[] value) {
 			DoRequiredArray(name, ref value, TaterToVector4);
@@ -659,6 +821,9 @@ namespace PoDato {
 		public bool OptionalQuaternionList<T>(string name, ref T value) where T : ICollection<Quaternion>, new() {
 			return DoOptionalCollection(name, ref value, TaterToQuaternion);
 		}
+		public bool OptionalQuaternionReadOnlyList(string name, ref IReadOnlyList<Quaternion> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToQuaternion);
+		}
 		public bool OptionalQuaternionArray(string name, ref Quaternion[] value) {
 			return DoOptionalArray(name, ref value, TaterToQuaternion);
 		}
@@ -670,6 +835,9 @@ namespace PoDato {
 		}
 		public void RequiredQuaternionList<T>(string name, ref T value) where T : ICollection<Quaternion>, new() {
 			DoRequiredCollection(name, ref value, TaterToQuaternion);
+		}
+		public void RequiredQuaternionReadOnlyList(string name, ref IReadOnlyList<Quaternion> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToQuaternion);
 		}
 		public void RequiredQuaternionArray(string name, ref Quaternion[] value) {
 			DoRequiredArray(name, ref value, TaterToQuaternion);
@@ -683,6 +851,9 @@ namespace PoDato {
 		public bool OptionalVector2IntList<T>(string name, ref T value) where T : ICollection<Vector2Int>, new() {
 			return DoOptionalCollection(name, ref value, TaterToVector2Int);
 		}
+		public bool OptionalVector2IntReadOnlyList(string name, ref IReadOnlyList<Vector2Int> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToVector2Int);
+		}
 		public bool OptionalVector2IntArray(string name, ref Vector2Int[] value) {
 			return DoOptionalArray(name, ref value, TaterToVector2Int);
 		}
@@ -694,6 +865,9 @@ namespace PoDato {
 		}
 		public void RequiredVector2IntList<T>(string name, ref T value) where T : ICollection<Vector2Int>, new() {
 			DoRequiredCollection(name, ref value, TaterToVector2Int);
+		}
+		public void RequiredVector2IntReadOnlyList(string name, ref IReadOnlyList<Vector2Int> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToVector2Int);
 		}
 		public void RequiredVector2IntArray(string name, ref Vector2Int[] value) {
 			DoRequiredArray(name, ref value, TaterToVector2Int);
@@ -707,6 +881,9 @@ namespace PoDato {
 		public bool OptionalVector3IntList<T>(string name, ref T value) where T : ICollection<Vector3Int>, new() {
 			return DoOptionalCollection(name, ref value, TaterToVector3Int);
 		}
+		public bool OptionalVector3IntReadOnlyList(string name, ref IReadOnlyList<Vector3Int> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToVector3Int);
+		}
 		public bool OptionalVector3IntArray(string name, ref Vector3Int[] value) {
 			return DoOptionalArray(name, ref value, TaterToVector3Int);
 		}
@@ -718,6 +895,9 @@ namespace PoDato {
 		}
 		public void RequiredVector3IntList<T>(string name, ref T value) where T : ICollection<Vector3Int>, new() {
 			DoRequiredCollection(name, ref value, TaterToVector3Int);
+		}
+		public void RequiredVector3IntReadOnlyList(string name, ref IReadOnlyList<Vector3Int> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToVector3Int);
 		}
 		public void RequiredVector3IntArray(string name, ref Vector3Int[] value) {
 			DoRequiredArray(name, ref value, TaterToVector3Int);
@@ -731,6 +911,9 @@ namespace PoDato {
 		public bool OptionalRectList<T>(string name, ref T value) where T : ICollection<Rect>, new() {
 			return DoOptionalCollection(name, ref value, TaterToRect);
 		}
+		public bool OptionalRectReadOnlyList(string name, ref IReadOnlyList<Rect> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToRect);
+		}
 		public bool OptionalRectArray(string name, ref Rect[] value) {
 			return DoOptionalArray(name, ref value, TaterToRect);
 		}
@@ -742,6 +925,9 @@ namespace PoDato {
 		}
 		public void RequiredRectList<T>(string name, ref T value) where T : ICollection<Rect>, new() {
 			DoRequiredCollection(name, ref value, TaterToRect);
+		}
+		public void RequiredRectReadOnlyList(string name, ref IReadOnlyList<Rect> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToRect);
 		}
 		public void RequiredRectArray(string name, ref Rect[] value) {
 			DoRequiredArray(name, ref value, TaterToRect);
@@ -755,6 +941,9 @@ namespace PoDato {
 		public bool OptionalRectIntList<T>(string name, ref T value) where T : ICollection<RectInt>, new() {
 			return DoOptionalCollection(name, ref value, TaterToRectInt);
 		}
+		public bool OptionalRectIntReadOnlyList(string name, ref IReadOnlyList<RectInt> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToRectInt);
+		}
 		public bool OptionalRectIntArray(string name, ref RectInt[] value) {
 			return DoOptionalArray(name, ref value, TaterToRectInt);
 		}
@@ -766,6 +955,9 @@ namespace PoDato {
 		}
 		public void RequiredRectIntList<T>(string name, ref T value) where T : ICollection<RectInt>, new() {
 			DoRequiredCollection(name, ref value, TaterToRectInt);
+		}
+		public void RequiredRectIntReadOnlyList(string name, ref IReadOnlyList<RectInt> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToRectInt);
 		}
 		public void RequiredRectIntArray(string name, ref RectInt[] value) {
 			DoRequiredArray(name, ref value, TaterToRectInt);
@@ -779,6 +971,9 @@ namespace PoDato {
 		public bool OptionalColorList<T>(string name, ref T value) where T : ICollection<Color>, new() {
 			return DoOptionalCollection(name, ref value, TaterToColor);
 		}
+		public bool OptionalColorReadOnlyList(string name, ref IReadOnlyList<Color> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToColor);
+		}
 		public bool OptionalColorArray(string name, ref Color[] value) {
 			return DoOptionalArray(name, ref value, TaterToColor);
 		}
@@ -790,6 +985,9 @@ namespace PoDato {
 		}
 		public void RequiredColorList<T>(string name, ref T value) where T : ICollection<Color>, new() {
 			DoRequiredCollection(name, ref value, TaterToColor);
+		}
+		public void RequiredColorReadOnlyList(string name, ref IReadOnlyList<Color> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToColor);
 		}
 		public void RequiredColorArray(string name, ref Color[] value) {
 			DoRequiredArray(name, ref value, TaterToColor);
@@ -803,6 +1001,9 @@ namespace PoDato {
 		public bool OptionalColor32List<T>(string name, ref T value) where T : ICollection<Color32>, new() {
 			return DoOptionalCollection(name, ref value, TaterToColor32);
 		}
+		public bool OptionalColor32ReadOnlyList(string name, ref IReadOnlyList<Color32> value) {
+			return DoOptionalReadOnlyList(name, ref value, TaterToColor32);
+		}
 		public bool OptionalColor32Array(string name, ref Color32[] value) {
 			return DoOptionalArray(name, ref value, TaterToColor32);
 		}
@@ -814,6 +1015,9 @@ namespace PoDato {
 		}
 		public void RequiredColor32List<T>(string name, ref T value) where T : ICollection<Color32>, new() {
 			DoRequiredCollection(name, ref value, TaterToColor32);
+		}
+		public void RequiredColor32ReadOnlyList(string name, ref IReadOnlyList<Color32> value) {
+			DoRequiredReadOnlyList(name, ref value, TaterToColor32);
 		}
 		public void RequiredColor32Array(string name, ref Color32[] value) {
 			DoRequiredArray(name, ref value, TaterToColor32);

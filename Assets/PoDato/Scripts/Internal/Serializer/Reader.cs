@@ -142,6 +142,21 @@ namespace PoDato {
 				return false;
 			}
 		}
+		private bool DoOptionalReadOnlyList<T>(string name, ref IReadOnlyList<T> rol, ReadFunc<T> reader) {
+			try {
+				Tater node = Current[name];
+				List<T> list = new List<T>(node.Count);
+				for (int ix = 0; ix < node.Count; ix++) {
+					list[ix] = reader(node[ix]);
+				}
+				rol = list.AsReadOnly();
+				return true;
+			} catch {
+				CheckLogPop();
+				rol = default;
+				return false;
+			}
+		}
 
 		private bool DoOptionalArray<T>(string name, ref T[] array, ReadFunc<T> reader) {
 			try {
@@ -240,6 +255,36 @@ namespace PoDato {
 					LogError(e.Message);
 					CheckLogPop();
 					array = default;
+				}
+				Pop();
+			} else if (!Current.IsObject) {
+				LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+			} else if (Current.Contains(name)) {
+				Push(Current[name]);
+				LogError(new DeserializationException(Current, $"{Current.Name} is not an array"));
+				Pop();
+			} else {
+				LogError(new DeserializationException(Current, $"{Current.Name} does not contain array named `{name}'"));
+			}
+		}
+		private void DoRequiredReadOnlyList<T>(string name, ref IReadOnlyList<T> rol, ReadFunc<T> reader) {
+			if (Current.IsObject && Current.Contains(name, TaterType.Array)) {
+				Tater node = Current[name];
+				Push(node);
+				try {
+					List<T> list = new List<T>(node.Count);
+					for (int ix = 0; ix < node.Count; ix++) {
+						list[ix] = reader(node[ix]);
+					}
+					rol = list.AsReadOnly();
+				} catch (DeserializationException e) {
+					LogError(e);
+					CheckLogPop();
+					rol = default;
+				} catch (Exception e) {
+					LogError(e.Message);
+					CheckLogPop();
+					rol = default;
 				}
 				Pop();
 			} else if (!Current.IsObject) {
