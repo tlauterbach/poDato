@@ -1,6 +1,6 @@
 {
   "name": "com.potatointeractive.podato",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "displayName": "PoDato",
   "description": "Reader/Writer for Unity/C# for easy to hand-write data file format PoDato",
   "unity": "2020.3",

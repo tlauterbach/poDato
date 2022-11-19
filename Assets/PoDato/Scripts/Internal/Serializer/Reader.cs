@@ -147,7 +147,7 @@ namespace PoDato {
 				Tater node = Current[name];
 				List<T> list = new List<T>(node.Count);
 				for (int ix = 0; ix < node.Count; ix++) {
-					list[ix] = reader(node[ix]);
+					list.Add(reader(node[ix]));
 				}
 				rol = list.AsReadOnly();
 				return true;
@@ -274,7 +274,7 @@ namespace PoDato {
 				try {
 					List<T> list = new List<T>(node.Count);
 					for (int ix = 0; ix < node.Count; ix++) {
-						list[ix] = reader(node[ix]);
+						list.Add(reader(node[ix]));
 					}
 					rol = list.AsReadOnly();
 				} catch (DeserializationException e) {
