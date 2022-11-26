@@ -625,6 +625,17 @@ namespace PoDato {
 			return Current;
 		}
 
+		public void PushContext(string name) {
+			if (Current.Contains(name)) {
+				Push(Current[name]);
+			} else {
+				throw new DeserializationException(Current, $"Cannot push context of non-existent field {name}");
+			}
+		}
+		public void PopContext() {
+			Pop();
+		}
+
 		public bool OptionalObject<T>(string name, ref T value) where T : IReadable, new() {
 			return DoOptional(name, ref value, TaterToObject<T>);
 		}
