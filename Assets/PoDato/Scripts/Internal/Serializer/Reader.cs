@@ -332,10 +332,10 @@ namespace PoDato {
 		#region Conversions
 
 		private T TaterToObject<T>(Tater tater) where T : IReadable, new() {
-			Push(tater);
+			//Push(tater);
 			T obj = new T();
 			obj.Deserialize(this);
-			Pop();
+			//Pop();
 			return obj;
 		}
 		private string TaterToString(Tater tater) {
