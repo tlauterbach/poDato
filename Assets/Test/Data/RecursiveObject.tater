@@ -1,0 +1,35 @@
+# RecursiveObject.tater
+
+{
+  required: 1.0
+  childA: {
+    required: 2.0
+    childA: {
+      required: 3
+    }
+    childB: {
+      required: 3
+      childA: {
+        required: 4
+      }
+    }
+  }
+  childB: {
+    required: 2
+  }
+  childC: {
+    required: 2
+    childA: {
+      required: 3
+    }
+    childC: {
+      required: 3
+      childA: {
+        required: 4
+        childB: {
+          required: 5
+        }
+      }
+    }
+  }
+}

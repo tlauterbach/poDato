@@ -118,101 +118,40 @@ namespace PoDato {
 			}
 		}
 
-		private bool DoOptional<T>(string name, ref T value, ReadFunc<T> reader) {
-			try {
-				value = reader(Current[name]);
-				return true;
-			} catch {
-				CheckLogPop();
-				value = default;
-				return false;
-			}
-		}
-		private bool DoOptionalCollection<T, U>(string name, ref T collection, ReadFunc<U> reader) where T : ICollection<U>, new() {
-			try {
-				Tater node = Current[name];
-				collection = new T();
-				for (int ix = 0; ix < node.Count; ix++) {
-					collection.Add(reader(node[ix]));
-				}
-				return true;
-			} catch {
-				CheckLogPop();
-				collection = default;
-				return false;
-			}
-		}
-		private bool DoOptionalReadOnlyList<T>(string name, ref IReadOnlyList<T> rol, ReadFunc<T> reader) {
-			try {
-				Tater node = Current[name];
-				List<T> list = new List<T>(node.Count);
-				for (int ix = 0; ix < node.Count; ix++) {
-					list.Add(reader(node[ix]));
-				}
-				rol = list.AsReadOnly();
-				return true;
-			} catch {
-				CheckLogPop();
-				rol = default;
-				return false;
-			}
-		}
-
-		private bool DoOptionalArray<T>(string name, ref T[] array, ReadFunc<T> reader) {
-			try {
-				Tater node = Current[name];
-				array = new T[node.Count];
-				for (int ix = 0; ix < node.Count; ix++) {
-					array[ix] = reader(node[ix]);
-				}
-				return true;
-			} catch {
-				CheckLogPop();
-				array = default;
-				return false;
-			}
-		}
-
-		private bool DoOptionalDictionary<T, U>(string name, ref T dictionary, ReadFunc<U> reader) where T : IDictionary<string, U>, new() {
-			try {
-				Tater node = Current[name];
-				dictionary = new T();
-				foreach (string key in node.Keys) {
-					dictionary.Add(key, reader(node[key]));
-				}
-				return true;
-			} catch {
-				CheckLogPop();
-				dictionary = default;
-				return false;
-			}
-		}
-
-		private void DoRequired<T>(string name, ref T value, ReadFunc<T> reader) {
+		private bool DoValue<T>(bool required, string name, ref T value, ReadFunc<T> reader) {
 			if (Current.IsObject && Current.Contains(name)) {
 				Push(Current[name]);
+				bool success = true;
 				try {
 					value = reader(Current);
 				} catch (DeserializationException e) {
 					LogError(e);
 					CheckLogPop();
 					value = default;
+					success = false;
 				} catch (Exception e) {
 					LogError(e.Message);
 					CheckLogPop();
 					value = default;
+					success = false;
 				}
 				Pop();
-			} else if (!Current.IsObject) {
-				LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+				return success;
 			} else {
-				LogError(new DeserializationException(Current, $"{Current.Name} does not contain field named `{name}'"));
+				if (!Current.IsObject) {
+					LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+				} else if (required) {
+					LogError(new DeserializationException(Current, $"{Current.Name} does not contain field named `{name}'"));
+				}
+				value = default;
+				return false;
 			}
 		}
-		private void DoRequiredCollection<T, U>(string name, ref T collection, ReadFunc<U> reader) where T : ICollection<U>, new() {
+		private bool DoCollection<T, U>(bool required, string name, ref T collection, ReadFunc<U> reader) where T : ICollection<U>, new() {
 			if (Current.IsObject && Current.Contains(name, TaterType.Array)) {
 				Tater node = Current[name];
 				Push(node);
+				bool success = true;
 				try {
 					collection = new T();
 					for (int ix = 0; ix < node.Count; ix++) {
@@ -222,26 +161,34 @@ namespace PoDato {
 					LogError(e);
 					CheckLogPop();
 					collection = default;
+					success = false;
 				} catch (Exception e) {
 					LogError(e.Message);
 					CheckLogPop();
 					collection = default;
+					success = false;
 				}
 				Pop();
-			} else if (!Current.IsObject) {
-				LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
-			} else if (Current.Contains(name)) {
-				Push(Current[name]);
-				LogError(new DeserializationException(Current, $"{Current.Name} is not an array"));
-				Pop();
+				return success;
 			} else {
-				LogError(new DeserializationException(Current, $"{Current.Name} does not contain array named `{name}'"));
+				if (!Current.IsObject) {
+					LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+				} else if (Current.Contains(name)) {
+					Push(Current[name]);
+					LogError(new DeserializationException(Current, $"{Current.Name} is not an array"));
+					Pop();
+				} else if (required) {
+					LogError(new DeserializationException(Current, $"{Current.Name} does not contain array named `{name}'"));
+				}
+				collection = default;
+				return false;
 			}
 		}
-		private void DoRequiredArray<T>(string name, ref T[] array, ReadFunc<T> reader) {
+		private bool DoArray<T>(bool required, string name, ref T[] array, ReadFunc<T> reader) {
 			if (Current.IsObject && Current.Contains(name, TaterType.Array)) {
 				Tater node = Current[name];
 				Push(node);
+				bool success = true;
 				try {
 					array = new T[node.Count];
 					for (int ix = 0; ix < node.Count; ix++) {
@@ -251,26 +198,34 @@ namespace PoDato {
 					LogError(e);
 					CheckLogPop();
 					array = default;
+					success = false;
 				} catch (Exception e) {
 					LogError(e.Message);
 					CheckLogPop();
 					array = default;
+					success = false;
 				}
 				Pop();
-			} else if (!Current.IsObject) {
-				LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
-			} else if (Current.Contains(name)) {
-				Push(Current[name]);
-				LogError(new DeserializationException(Current, $"{Current.Name} is not an array"));
-				Pop();
+				return success;
 			} else {
-				LogError(new DeserializationException(Current, $"{Current.Name} does not contain array named `{name}'"));
+				if (!Current.IsObject) {
+					LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+				} else if (Current.Contains(name)) {
+					Push(Current[name]);
+					LogError(new DeserializationException(Current, $"{Current.Name} is not an array"));
+					Pop();
+				} else if (required) {
+					LogError(new DeserializationException(Current, $"{Current.Name} does not contain array named `{name}'"));
+				}
+				array = default;
+				return false;
 			}
 		}
-		private void DoRequiredReadOnlyList<T>(string name, ref IReadOnlyList<T> rol, ReadFunc<T> reader) {
+		private bool DoReadOnlyList<T>(bool required, string name, ref IReadOnlyList<T> rol, ReadFunc<T> reader) {
 			if (Current.IsObject && Current.Contains(name, TaterType.Array)) {
 				Tater node = Current[name];
 				Push(node);
+				bool success = true;
 				try {
 					List<T> list = new List<T>(node.Count);
 					for (int ix = 0; ix < node.Count; ix++) {
@@ -281,26 +236,34 @@ namespace PoDato {
 					LogError(e);
 					CheckLogPop();
 					rol = default;
+					success = false;
 				} catch (Exception e) {
 					LogError(e.Message);
 					CheckLogPop();
 					rol = default;
+					success = false;
 				}
 				Pop();
-			} else if (!Current.IsObject) {
-				LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
-			} else if (Current.Contains(name)) {
-				Push(Current[name]);
-				LogError(new DeserializationException(Current, $"{Current.Name} is not an array"));
-				Pop();
+				return success;
 			} else {
-				LogError(new DeserializationException(Current, $"{Current.Name} does not contain array named `{name}'"));
+				if (!Current.IsObject) {
+					LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
+				} else if (Current.Contains(name)) {
+					Push(Current[name]);
+					LogError(new DeserializationException(Current, $"{Current.Name} is not an array"));
+					Pop();
+				} else if (required) {
+					LogError(new DeserializationException(Current, $"{Current.Name} does not contain array named `{name}'"));
+				}
+				rol = default;
+				return false;
 			}
 		}
-		private void DoRequiredDictionary<T, U>(string name, ref T dictionary, ReadFunc<U> reader) where T : IDictionary<string, U>, new() {
+		private bool DoDictionary<T, U>(bool required, string name, ref T dictionary, ReadFunc<U> reader) where T : IDictionary<string, U>, new() {
 			if (Current.IsObject && Current.Contains(name, TaterType.Object)) {
 				Tater node = Current[name];
 				Push(node);
+				bool success = true;
 				try {
 					dictionary = new T();
 					foreach (string key in node.Keys) {
@@ -310,12 +273,15 @@ namespace PoDato {
 					LogError(e);
 					CheckLogPop();
 					dictionary = default;
+					success = false;
 				} catch (Exception e) {
 					LogError(e.Message);
 					CheckLogPop();
 					dictionary = default;
+					success = false;
 				}
 				Pop();
+				return success;
 			} else {
 				if (!Current.IsObject) {
 					LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
@@ -323,9 +289,11 @@ namespace PoDato {
 					Push(Current[name]);
 					LogError(new DeserializationException(Current, $"{Current.Name} is not an object"));
 					Pop();
-				} else {
+				} else if (required) {
 					LogError(new DeserializationException(Current, $"{Current.Name} does not contain object named `{name}'"));
 				}
+				dictionary = default;
+				return false;
 			}
 		}
 
@@ -637,71 +605,71 @@ namespace PoDato {
 		}
 
 		public bool OptionalObject<T>(string name, ref T value) where T : IReadable, new() {
-			return DoOptional(name, ref value, TaterToObject<T>);
+			return DoValue(false, name, ref value, TaterToObject<T>);
 		}
 
 		public bool OptionalObjectList<T, U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadable, new() {
-			return DoOptionalCollection(name, ref value, TaterToObject<U>);
+			return DoCollection(false, name, ref value, TaterToObject<U>);
 		}
 		public bool OptionalObjectReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadable, new() {
-			return DoOptionalReadOnlyList(name, ref value, TaterToObject<T>);
+			return DoReadOnlyList(false, name, ref value, TaterToObject<T>);
 		}
 		public bool OptionalObjectArray<T>(string name, ref T[] value) where T : IReadable, new() {
-			return DoOptionalArray(name, ref value, TaterToObject<T>);
+			return DoArray(false, name, ref value, TaterToObject<T>);
 		}
 
 		public bool OptionalObjectMap<T, U>(string name, ref T value) where T : IDictionary<string, U>, new() where U : IReadable, new() {
-			return DoOptionalDictionary(name, ref value, TaterToObject<U>);
+			return DoDictionary(false, name, ref value, TaterToObject<U>);
 		}
 
 		public void RequiredObject<T>(string name, ref T value) where T : IReadable, new() {
-			DoRequired(name, ref value, TaterToObject<T>);
+			DoValue(true, name, ref value, TaterToObject<T>);
 		}
 
 		public void RequiredObjectList<T, U>(string name, ref T value) where T : ICollection<U>, new() where U : IReadable, new() {
-			DoRequiredCollection(name, ref value, TaterToObject<U>);
+			DoCollection(true, name, ref value, TaterToObject<U>);
 		}
 
 		public void RequiredObjectMap<T, U>(string name, ref T value) where T : IDictionary<string, U>, new() where U : IReadable, new() {
-			DoRequiredDictionary(name, ref value, TaterToObject<U>);
+			DoDictionary(true, name, ref value, TaterToObject<U>);
 		}
 		public void RequiredObjectArray<T>(string name, ref T[] value) where T : IReadable, new() {
-			DoRequiredArray(name, ref value, TaterToObject<T>);
+			DoArray(true, name, ref value, TaterToObject<T>);
 		}
 		public void RequiredObjectReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : IReadable, new() {
-			DoRequiredReadOnlyList(name, ref value, TaterToObject<T>);
+			DoReadOnlyList(true, name, ref value, TaterToObject<T>);
 		}
 
 
 		public bool OptionalEnum<T>(string name, ref T value) where T : struct, Enum {
-			return DoOptional(name, ref value, TaterToEnum<T>);
+			return DoValue(false, name, ref value, TaterToEnum<T>);
 		}
 		public bool OptionalEnumList<T, U>(string name, ref T value) where T : ICollection<U>, new() where U : struct, Enum {
-			return DoOptionalCollection(name, ref value, TaterToEnum<U>);
+			return DoCollection(false, name, ref value, TaterToEnum<U>);
 		}
 		public bool OptionalEnumReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : struct, Enum {
-			return DoOptionalReadOnlyList(name, ref value, TaterToEnum<T>);
+			return DoReadOnlyList(false, name, ref value, TaterToEnum<T>);
 		}
 		public bool OptionalEnumArray<T>(string name, ref T[] value) where T : struct, Enum {
-			return DoOptionalArray(name, ref value, TaterToEnum<T>);
+			return DoArray(false, name, ref value, TaterToEnum<T>);
 		}
 		public bool OptionalEnumMap<T, U>(string name, ref T value) where T : IDictionary<string, U>, new() where U : struct, Enum {
-			return DoOptionalDictionary(name, ref value, TaterToEnum<U>);
+			return DoDictionary(false, name, ref value, TaterToEnum<U>);
 		}
 		public void RequiredEnum<T>(string name, ref T value) where T : struct, Enum {
-			DoRequired(name, ref value, TaterToEnum<T>);
+			DoValue(true, name, ref value, TaterToEnum<T>);
 		}
 		public void RequiredEnumList<T, U>(string name, ref T value) where T : ICollection<U>, new() where U : struct, Enum {
-			DoRequiredCollection(name, ref value, TaterToEnum<U>);
+			DoCollection(true, name, ref value, TaterToEnum<U>);
 		}
 		public void RequiredEnumReadOnlyList<T>(string name, ref IReadOnlyList<T> value) where T : struct, Enum {
-			DoRequiredReadOnlyList(name, ref value, TaterToEnum<T>);
+			DoReadOnlyList(true, name, ref value, TaterToEnum<T>);
 		}
 		public void RequiredEnumArray<T>(string name, ref T[] value) where T : struct, Enum {
-			DoRequiredArray(name, ref value, TaterToEnum<T>);
+			DoArray(true, name, ref value, TaterToEnum<T>);
 		}
 		public void RequiredEnumMap<T, U>(string name, ref T value) where T : IDictionary<string, U>, new() where U : struct, Enum {
-			DoRequiredDictionary(name, ref value, TaterToEnum<U>);
+			DoDictionary(true, name, ref value, TaterToEnum<U>);
 		}
 
 		#endregion

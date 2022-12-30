@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_evidence: {fileID: 3232733424486734734, guid: f0e2a9eba02654a4a9da4766c68b8edf, type: 3}
   m_manyTypes: {fileID: 3232733424486734734, guid: 597d7c601d410624ab9ca5498ddb901b, type: 3}
+  m_recursiveObject: {fileID: 3232733424486734734, guid: f6b1ddac0b26c8d4bb63ba99e9c8a22a, type: 3}
 --- !u!4 &1315891397
 Transform:
   m_ObjectHideFlags: 0

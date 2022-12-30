@@ -153,3 +153,19 @@ public class ManyTypes : IReadable, IWritable {
 	}
 
 }
+
+public class RecursiveObject : IReadable {
+
+	private float m_required;
+	private RecursiveObject m_childA;
+	private RecursiveObject m_childB;
+	private RecursiveObject m_childC;
+
+	public void Deserialize(IReader reader) {
+		reader.RequiredSingle("required", ref m_required);
+		reader.OptionalObject("childA", ref m_childA);
+		reader.OptionalObject("childB", ref m_childB);
+		reader.OptionalObject("childC", ref m_childC);
+	}
+
+}

@@ -8,6 +8,8 @@ public class Test : MonoBehaviour {
 	private TaterAsset m_evidence;
 	[SerializeField]
 	private TaterAsset m_manyTypes;
+	[SerializeField]
+	private TaterAsset m_recursiveObject;
 
 	private TaterReader m_reader;
 	private TaterWriter m_writer;
@@ -29,6 +31,12 @@ public class Test : MonoBehaviour {
 			m_writer = new TaterWriter(2);
 			string output = m_writer.Write(manyTypes.ResultObject);
 			Debug.Log(output);
+		} else {
+			LogErrors(evidence);
+		}
+		ReadResult<RecursiveObject> recursive = m_reader.Read<RecursiveObject>(m_recursiveObject);
+		if (recursive.IsSuccess) {
+			Debug.Log($"Read Successful: {m_recursiveObject.name}");
 		} else {
 			LogErrors(evidence);
 		}
