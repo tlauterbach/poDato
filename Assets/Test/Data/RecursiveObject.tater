@@ -13,6 +13,25 @@
         required: 4
       }
     }
+    childD: [
+      {
+        required : 3
+        childD: [
+          {
+            required: 4
+          }
+          {
+            required: 4
+            childB: {
+              required: 5
+              childA: {
+                required: 6
+              }
+            }
+          }
+        ]
+      }
+    ]
   }
   childB: {
     required: 2

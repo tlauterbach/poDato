@@ -152,21 +152,23 @@ namespace PoDato {
 				Tater node = Current[name];
 				Push(node);
 				bool success = true;
-				try {
-					collection = new T();
-					for (int ix = 0; ix < node.Count; ix++) {
-						collection.Add(reader(node[ix]));
+				collection = new T();
+				for (int ix = 0; ix < node.Count && success; ix++) {
+					Push(node[ix]);
+					try {
+						collection.Add(reader(Current));
+					} catch (DeserializationException e) {
+						LogError(e);
+						CheckLogPop();
+						collection = default;
+						success = false;
+					} catch (Exception e) {
+						LogError(e.Message);
+						CheckLogPop();
+						collection = default;
+						success = false;
 					}
-				} catch (DeserializationException e) {
-					LogError(e);
-					CheckLogPop();
-					collection = default;
-					success = false;
-				} catch (Exception e) {
-					LogError(e.Message);
-					CheckLogPop();
-					collection = default;
-					success = false;
+					Pop();
 				}
 				Pop();
 				return success;
@@ -189,21 +191,24 @@ namespace PoDato {
 				Tater node = Current[name];
 				Push(node);
 				bool success = true;
-				try {
-					array = new T[node.Count];
-					for (int ix = 0; ix < node.Count; ix++) {
-						array[ix] = reader(node[ix]);
+				
+				array = new T[node.Count];
+				for (int ix = 0; ix < node.Count && success; ix++) {
+					Push(node[ix]);
+					try {
+						array[ix] = reader(Current);
+					} catch (DeserializationException e) {
+						LogError(e);
+						CheckLogPop();
+						array = default;
+						success = false;
+					} catch (Exception e) {
+						LogError(e.Message);
+						CheckLogPop();
+						array = default;
+						success = false;
 					}
-				} catch (DeserializationException e) {
-					LogError(e);
-					CheckLogPop();
-					array = default;
-					success = false;
-				} catch (Exception e) {
-					LogError(e.Message);
-					CheckLogPop();
-					array = default;
-					success = false;
+					Pop();
 				}
 				Pop();
 				return success;
@@ -226,22 +231,27 @@ namespace PoDato {
 				Tater node = Current[name];
 				Push(node);
 				bool success = true;
-				try {
-					List<T> list = new List<T>(node.Count);
-					for (int ix = 0; ix < node.Count; ix++) {
-						list.Add(reader(node[ix]));
+				
+				List<T> list = new List<T>(node.Count);
+				for (int ix = 0; ix < node.Count && success; ix++) {
+					Push(node[ix]);
+					try {
+						list.Add(reader(Current));
+					} catch (DeserializationException e) {
+						LogError(e);
+						CheckLogPop();
+						list = default;
+						success = false;
+					} catch (Exception e) {
+						LogError(e.Message);
+						CheckLogPop();
+						list = default;
+						success = false;
 					}
+					Pop();
+				}
+				if (list != null) {
 					rol = list.AsReadOnly();
-				} catch (DeserializationException e) {
-					LogError(e);
-					CheckLogPop();
-					rol = default;
-					success = false;
-				} catch (Exception e) {
-					LogError(e.Message);
-					CheckLogPop();
-					rol = default;
-					success = false;
 				}
 				Pop();
 				return success;
@@ -264,22 +274,29 @@ namespace PoDato {
 				Tater node = Current[name];
 				Push(node);
 				bool success = true;
-				try {
-					dictionary = new T();
-					foreach (string key in node.Keys) {
-						dictionary.Add(key, reader(node[key]));
+
+				dictionary = new T();
+				foreach (string key in node.Keys) {
+					Push(node[key]);
+					try {
+						dictionary.Add(key, reader(Current));
+					} catch (DeserializationException e) {
+						LogError(e);
+						CheckLogPop();
+						dictionary = default;
+						success = false;
+					} catch (Exception e) {
+						LogError(e.Message);
+						CheckLogPop();
+						dictionary = default;
+						success = false;
 					}
-				} catch (DeserializationException e) {
-					LogError(e);
-					CheckLogPop();
-					dictionary = default;
-					success = false;
-				} catch (Exception e) {
-					LogError(e.Message);
-					CheckLogPop();
-					dictionary = default;
-					success = false;
+					Pop();
+					if (!success) {
+						break;
+					}
 				}
+				
 				Pop();
 				return success;
 			} else {
