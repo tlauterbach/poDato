@@ -623,7 +623,7 @@ namespace PoDato {
 		}
 		public void PushContext(int index) {
 			if (Current.IsArray) {
-				if (index > 0 && index < Current.Count) {
+				if (index >= 0 && index < Current.Count) {
 					Push(Current[index]);
 				} else {
 					throw new DeserializationException(Current, $"Index {index} is now within the bounds of the array");
