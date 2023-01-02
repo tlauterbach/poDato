@@ -191,7 +191,7 @@ namespace PoDato {
 				Tater node = Current[name];
 				Push(node);
 				bool success = true;
-				
+
 				array = new T[node.Count];
 				for (int ix = 0; ix < node.Count && success; ix++) {
 					Push(node[ix]);
@@ -231,7 +231,7 @@ namespace PoDato {
 				Tater node = Current[name];
 				Push(node);
 				bool success = true;
-				
+
 				List<T> list = new List<T>(node.Count);
 				for (int ix = 0; ix < node.Count && success; ix++) {
 					Push(node[ix]);
@@ -296,7 +296,7 @@ namespace PoDato {
 						break;
 					}
 				}
-				
+
 				Pop();
 				return success;
 			} else {
@@ -465,7 +465,7 @@ namespace PoDato {
 			Tater x = tater["x"];
 			Tater y = tater["y"];
 			Vector2 value = new Vector2(
-				PushTaterToSingle(x), 
+				PushTaterToSingle(x),
 				PushTaterToSingle(y)
 			);
 			return value;
@@ -611,10 +611,25 @@ namespace PoDato {
 		}
 
 		public void PushContext(string name) {
-			if (Current.Contains(name)) {
-				Push(Current[name]);
+			if (Current.IsObject) {
+				if (Current.Contains(name)) {
+					Push(Current[name]);
+				} else {
+					throw new DeserializationException(Current, $"Cannot push context of non-existent field {name}");
+				}
 			} else {
-				throw new DeserializationException(Current, $"Cannot push context of non-existent field {name}");
+				throw new DeserializationException(Current, $"Cannot push named context on non-object {Current.Name}");
+			}
+		}
+		public void PushContext(int index) {
+			if (Current.IsArray) {
+				if (index > 0 && index < Current.Count) {
+					Push(Current[index]);
+				} else {
+					throw new DeserializationException(Current, $"Index {index} is now within the bounds of the array");
+				}
+			} else {
+				throw new DeserializationException(Current, $"Cannot push indexed contex on non-array {Current.Name}");
 			}
 		}
 		public void PopContext() {
