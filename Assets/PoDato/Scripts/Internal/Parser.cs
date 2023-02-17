@@ -58,7 +58,7 @@
 				}
 			} else if (peek == TokenType.String) {
 				stream.Advance();
-				return Tater.CreateString(name, RemoveQuotes(peek), lineNumber);
+				return Tater.CreateString(name, RemoveEscapedQuotes(RemoveQuotes(peek)), lineNumber);
 			} else if (peek == TokenType.True) {
 				stream.Advance();
 				return Tater.CreateBoolean(name, true, lineNumber);
@@ -75,6 +75,9 @@
 			} else {
 				return value;
 			}
+		}
+		private static string RemoveEscapedQuotes(string value) {
+			return value.Replace("\\\"", "\"");
 		}
 	}
 

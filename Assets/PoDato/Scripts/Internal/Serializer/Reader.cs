@@ -626,7 +626,7 @@ namespace PoDato {
 				if (index >= 0 && index < Current.Count) {
 					Push(Current[index]);
 				} else {
-					throw new DeserializationException(Current, $"Index {index} is now within the bounds of the array");
+					throw new DeserializationException(Current, $"Index {index} is not within the bounds of the array");
 				}
 			} else {
 				throw new DeserializationException(Current, $"Cannot push indexed contex on non-array {Current.Name}");
